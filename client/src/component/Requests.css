@@ -1,0 +1,19 @@
+.dropdown ul {
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  justify-content: flex-start;
+}
+
+.dropdown ul .req {
+  margin: 0;
+  padding: 0.5rem;
+  background-color: #ffffff;
+  align-items: center;
+  width: 100%;
+  height: 7rem;
+  border-radius: 5%;
+}

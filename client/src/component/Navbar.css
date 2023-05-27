@@ -1,0 +1,94 @@
+ .nav {
+  background-color: white;
+  height: 4rem;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 2rem;
+  padding: 0 1rem;
+  box-shadow: 0 .1rem .2rem rgba(0, 0, 0, 0.2);
+  align-items: center;
+}
+
+.site-title {
+  font-size: 2rem;
+  font-family: "serif";
+}
+
+.nav ul {
+  /* border: solid; */
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.nav .options a {
+  color: inherit;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 .25rem;
+}
+.nav .options li.active {
+  border-bottom: #35bdb9 solid;
+  font-weight: 600;
+}
+.nav .options li:hover {
+  /* background-color: #777; */
+}
+
+.nav .profile {
+  height: 70%;
+  margin-right: 2rem;
+  display: flex;
+}
+
+.nav .profile a {
+  color: inherit;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.nav img {
+  max-height: 100%;
+  object-fit: contain;
+  width: auto;
+  aspect-ratio: 1/1;
+}
+
+.nav .profile p {
+  font-weight: 500;
+  margin-left: 1rem;
+}
+
+.round-image {
+  border-radius: 50%;
+}
+
+.bell {
+  margin-top: auto;
+  margin-bottom: auto;
+  position: relative;
+}
+
+.dropdown {
+  background-color: #c0dfde;
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 20rem;
+  height: 20rem;
+  border-radius: 5%;
+  padding: 1rem 0.5rem;
+  align-items: center;
+  box-shadow: 0 0 0.1rem;
+  overflow-y: auto;
+  /* border: solid; */
+}

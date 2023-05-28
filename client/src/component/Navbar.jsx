@@ -12,9 +12,6 @@ export default function Navbar () {
   const [newRequest, setNewRequest] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
 
-  const handleProfileLinkClick = () => {
-    setIsNavbarVisible(false);
-  };
 
   useEffect(() => {
     console.log(openDropdown);
@@ -32,15 +29,15 @@ export default function Navbar () {
         <CustomLink to="/Explore">Explore</CustomLink>
         <CustomLink to="/Friends">Friends</CustomLink>
       </ul>
-      <ul className="profile">
+      <ul className="others">
         <button className="bell" onClick={() =>setOpenDropdown(prev => !prev)}>
           <FontAwesomeIcon className={newRequest ? "have-request":""} icon={faBell} size="lg"/>
           {openDropdown && <Dropdown />}
         </button>
-        <CustomLink to="/Profile" onClick={handleProfileLinkClick}>
-          <img src="images/default.png" className="round-image" alt="" />
-          <p>Adesanya</p>
-        </CustomLink>
+        <Link to="/profile" className="profile">
+          <img src="images/default.png" className="round-image"/>
+          <a>Adesanya</a>
+        </Link>
       </ul>
     </nav>
     )}

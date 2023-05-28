@@ -4,7 +4,7 @@
   color: black;
   display: flex;
   justify-content: space-between;
-  align-items: stretch;
+  align-items: center;
   gap: 2rem;
   padding: 0 1rem;
   box-shadow: 0 .1rem .2rem rgba(0, 0, 0, 0.2);
@@ -25,7 +25,7 @@
   gap: 2rem;
 }
 
-.nav .options a {
+.nav .options {
   color: inherit;
   height: 100%;
   display: flex;
@@ -36,45 +36,45 @@
   border-bottom: #35bdb9 solid;
   font-weight: 600;
 }
-.nav .options li:hover {
-  /* background-color: #777; */
-}
 
-.nav .profile {
+.nav .others {
+  width: 15rem;
   height: 70%;
   margin-right: 2rem;
   display: flex;
 }
 
-.nav .profile a {
-  color: inherit;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  margin-top: auto;
-  margin-bottom: auto;
-}
-
-.nav img {
+.profile .round-image {
   max-height: 100%;
   object-fit: contain;
   width: auto;
   aspect-ratio: 1/1;
-}
-
-.nav .profile p {
-  font-weight: 500;
-  margin-left: 1rem;
-}
-
-.round-image {
   border-radius: 50%;
 }
 
-.bell {
+.others .profile {
+  display: flex;
+}
+
+.others .profile a {
+  font-weight: 500;
+  margin-left: 1rem;
   margin-top: auto;
   margin-bottom: auto;
+}
+
+.others .bell {
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 2rem;
+  height: 2rem;
+  padding: auto;
   position: relative;
+  border-radius: 50%;
+}
+
+.others .bell:hover {
+  background-color: rgb(206, 206, 206);
 }
 
 .dropdown {

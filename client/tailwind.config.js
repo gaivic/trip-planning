@@ -8,6 +8,10 @@ module.exports = withMT({
   ],
   theme: {
     extend: {},
+    colors: {
+      addNewTrip: '#1ce2ee',
+      addNewTripHover: '#30effb',
+    }
   },
   plugins: [
     

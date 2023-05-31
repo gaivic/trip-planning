@@ -1,0 +1,26 @@
+.left {
+  flex: 0.7;
+  background-color: rgba(173, 216, 230, 0.227);
+  padding: 5rem 15rem 0 15rem;
+}
+
+.left .mainpost {
+  background-color: rgb(182, 182, 182);
+  height: 20rem;
+}
+
+.left .others {
+  background-color: antiquewhite;
+}
+
+.others .post {
+  background-color: black;
+  height: 10rem;
+  width: 10rem;
+}
+
+.right {
+  flex: 0.3;
+  background-color: rgba(144, 238, 144, 0.2);
+}
+

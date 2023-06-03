@@ -1,0 +1,7 @@
+.posts {
+    background-color: rgba(179, 236, 236, 0.15);
+}
+
+.posts:hover {
+    background-color: rgba(179, 236, 236, 0.35);
+}

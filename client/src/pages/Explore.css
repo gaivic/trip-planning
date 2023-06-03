@@ -1,4 +1,7 @@
+.posts {
+  background-color: rgba(179, 236, 236, 0.15);
+}
 
-.con {
-  height: 900px;
+.posts:hover {
+  background-color: rgba(179, 236, 236, 0.35);
 }

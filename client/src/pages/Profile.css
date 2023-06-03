@@ -1,0 +1,13 @@
+.profile{
+  /* overflow-y: scroll; */
+}
+.posts .active {
+  border-bottom: #35bdb9 solid;
+  border-top-width: 2px;
+}
+
+.row .post{
+  flex: 1 0 calc(25% - 1rem);
+  margin: 0 0.5rem;
+  height: 16rem;
+}

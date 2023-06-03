@@ -3,10 +3,10 @@ import "./Explore.css"
 export default function Explore() {
   return (
     <div className="body">
-      <div className="left">
+      <div className="laft">
       hi
       </div>
-      <div className="right">
+      <div className="rught">
       hi
       </div>
     </div>

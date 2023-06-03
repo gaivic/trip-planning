@@ -1,26 +1,33 @@
 .left {
-  flex: 0.7;
-  background-color: rgba(173, 216, 230, 0.227);
-  padding: 5rem 15rem 0 15rem;
-}
-
-.left .mainpost {
-  background-color: rgb(182, 182, 182);
-  height: 20rem;
-}
-
-.left .others {
-  background-color: antiquewhite;
-}
-
-.others .post {
-  background-color: black;
-  height: 10rem;
-  width: 10rem;
+  flex: 0.75;
 }
 
 .right {
-  flex: 0.3;
-  background-color: rgba(144, 238, 144, 0.2);
+  flex: 0.25;
+  /* background-color: rgba(144, 238, 144, 0.2); */
+}
+
+.others .post{
+  flex: 1 0 calc(33.3333% - 1rem);
+  margin: 0 0.5rem;
+  height: 14rem;
+}
+
+.left::-webkit-scrollbar {
+  width: 8px;
+  background-color: #f5f5f5;
+}
+
+.left::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 4px;
+}
+
+.left::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.left::-webkit-scrollbar-track {
+  background-color: #f5f5f5;
 }
 

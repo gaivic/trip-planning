@@ -5,7 +5,7 @@ import { GrAddCircle } from "react-icons/gr";
 export default function Friends() {
     return (
         <div className="body flex w-full">
-            <div className="fleft overflow-y-auto border border-black">
+            <div className="fleft overflow-y-auto ">
                 <div className="post rounded-xl mx-auto p-4 border border-gray">
                     <p className='text-2xl text-left font-semibold mb-2 ml-1'>Summer Trip to Thailand</p>
                     <img src="images/travel.jpg" className='rounded-xl h-5/6 w-full object-cover' />
@@ -58,7 +58,7 @@ export default function Friends() {
                     </div>
                 </div>
             </div>
-            <div className="fright overflow-y-auto border border-black">
+            <div className="fright overflow-y-auto ">
                 <div className="rounded-xl mx-auto px-10 py-5">
                     <p className='text-2xl text-left mt-2 mb-6 ml-1 font-semibold'>Friends</p>
                     <div className="search rounded-2xl border border-gray-400">

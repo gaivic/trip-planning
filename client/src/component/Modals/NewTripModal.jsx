@@ -40,7 +40,12 @@ const NewTripModal = () => {
         setStep((value) => value - 1);
     }
     const onNext = () => {
-        setStep((value) => value + 1);
+        if (step === STEPS.INFO) {
+            submitTrip(watch());
+        }
+        else {
+            setStep((value) => value + 1);
+        }
     }
     const actionLabel = useMemo(() => {
         // if last Step
@@ -108,7 +113,6 @@ const NewTripModal = () => {
         reset,
     } = useForm({
         defaultValues: {
-            category: '',
             location: null,
             imageSrc: '',
             price: 1,
@@ -149,6 +153,24 @@ const NewTripModal = () => {
         }
     };
 
+    const submitTrip = async (data) => {
+        try {
+            // Make a POST request to the appropriate endpoint of your JSON Server API
+            const response = await axios.post('http://localhost:3030/posts', data);
+
+            if (response.status === 201) {
+                console.log('Trip created successfully:', response.data);
+                // Handle any further actions after successful creation of the trip
+            } else {
+                console.log('Failed to create trip:', response.status);
+                // Handle the error case if the trip creation fails
+            }
+        } catch (error) {
+            console.log('Error creating trip:', error);
+            // Handle any error that occurs during the POST request
+        }
+    };
+
 
     // fake friends
     const friends = [{ name: 'Jennie' }, { name: 'Aaron' }, { name: 'Smith' }, { name: 'Porter' }, { name: 'Michael' }, { name: 'Samantha' },]
@@ -160,6 +182,9 @@ const NewTripModal = () => {
         endDate: new Date(),
     });
 
+    useEffect(() => {
+        console.log(selectedDate.endDate, selectedDate.startDate);
+    }, [selectedDate])
     const disabledDates = []; // Define your disabled dates array here 
 
 

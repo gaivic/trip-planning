@@ -1,0 +1,23 @@
+# get all books
+GET http://localhost:3030/posts HTTP/1.1
+Content-Type: application/json
+
+
+###
+# create a book
+POST http://localhost:3030/posts HTTP/1.1
+Content-Type: application/json
+
+  {
+    "creatorId": "54321",
+    "postTitle": "Trip to Korea",
+    "picturePath": "",
+    "location": "Korea",
+    "days": 4,
+    "schedule" : [],
+    "likes": 0,
+    "Members": [],
+    "dates": []
+  }
+
+

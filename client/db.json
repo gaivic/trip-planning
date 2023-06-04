@@ -1,0 +1,64 @@
+{
+  "posts": [
+    {
+      "creatorId": "54321",
+      "postTitle": "Trip to Korea",
+      "picturePath": "",
+      "location": "Korea",
+      "days": 4,
+      "schedule": [],
+      "likes": 0,
+      "Members": [],
+      "dates": ["2023/6/4", "2023/6/10"],
+      "id": 1
+    },
+    {
+      "creatorId": "54321",
+      "postTitle": "Trip to Korea",
+      "picturePath": "",
+      "location": "Korea",
+      "days": 4,
+      "schedule": [],
+      "likes": 0,
+      "Members": [],
+      "dates": ["2023/6/4", "2023/6/10"],
+      "id": 2
+    },
+    {
+      "creatorId": "54321",
+      "postTitle": "Trip to Korea",
+      "picturePath": "",
+      "location": "Korea",
+      "days": 4,
+      "schedule": [],
+      "likes": 0,
+      "Members": [],
+      "dates": ["2023/6/4", "2023/6/10"],
+      "id": 4
+    },
+    {
+      "creatorId": "54321",
+      "postTitle": "Trip to Korea",
+      "picturePath": "",
+      "location": "Korea",
+      "days": 4,
+      "schedule": [],
+      "likes": 0,
+      "Members": [],
+      "dates": ["2023/6/4", "2023/6/10"],
+      "id": 5
+    },
+    {
+      "creatorId": "54321",
+      "postTitle": "Trip to Korea",
+      "picturePath": "",
+      "location": "Korea",
+      "days": 4,
+      "schedule": [],
+      "likes": 0,
+      "Members": [],
+      "dates": ["2023/6/4", "2023/6/10"],
+      "id": 6
+    }
+  ]
+}

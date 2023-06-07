@@ -16,7 +16,7 @@
 }
 
 .others .post {
-  flex: 1 0 calc(33.3333% - 1rem);
+  width: calc(33.3333% - 1rem);
   margin: 0 0.5rem;
   height: 14rem;
 }

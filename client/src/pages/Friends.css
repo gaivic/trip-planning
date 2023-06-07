@@ -1,0 +1,44 @@
+.post {
+    background-color: rgba(179, 236, 236, 0.15);
+    height: 30rem;
+    width: 40rem;
+}
+
+.post:hover {
+    background-color: rgba(179, 236, 236, 0.35);
+}
+
+.friend {
+    padding: 1rem 0;
+}
+
+.friend:hover {
+    background-color: rgba(179, 236, 236, 0.5);
+}
+
+.fleft {
+    flex: 0.7;
+    padding: 3rem;
+}
+
+.fright {
+    flex: 0.3;
+    padding: 3rem;
+}
+
+.fright .py-5 {
+    background-color: rgba(179, 236, 236, 0.35);
+}
+
+.fright .search {
+    background-color: rgba(255, 255, 255);
+    padding: 0.25rem 0;
+}
+
+.fright .add {
+    padding: 0.5rem 0;
+}
+
+.fixed {
+    background-color: rgba(179, 236, 236, 0.35);
+}

@@ -13,13 +13,6 @@ const Header = () => {
     const [openDropdown, setOpenDropdown] = useState(false);
     const [closeFlagRef, setCloseFlagRef] = useState(false);
 
-    useEffect(() => {
-        console.log(openDropdown);
-    }, [openDropdown])
-
-    useEffect(() => {
-        console.log(`flag is set to ${closeFlagRef}`);
-    }, [closeFlagRef])
 
     const handleClick = () => {
         if (!closeFlagRef) {

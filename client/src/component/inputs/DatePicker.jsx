@@ -1,11 +1,11 @@
 import { useState} from 'react';
-import { DateRangePicker } from 'react-date-range';
+import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 
-const DatePicker = ({ value, onChange, disabledDates }) => {
+const DatePicker = ({ value, onChange }) => {
     return (
-        <DateRangePicker
+        <DateRange
             rangeColors={['#262626']}
             ranges={[value]}
             date={new Date()}
@@ -13,7 +13,6 @@ const DatePicker = ({ value, onChange, disabledDates }) => {
             direction="vertical"
             showDateDisplay={false}
             minDate={new Date()}
-            disabledDates={disabledDates}
         />
     );
 };

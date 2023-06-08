@@ -44,6 +44,51 @@
         "2023/06/17"
       ],
       "id": 3
+    },
+    {
+      "creatorId": "12345",
+      "postTitle": "Trip to Angola",
+      "picturePath": "https://images.unsplash.com/photo-1506356605750-cba1163d24ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTY0NjV8MHwxfHNlYXJjaHw2fHxBbmdvbGF8ZW58MHx8fHwxNjg2MjEwNDQzfDA&ixlib=rb-4.0.3&q=80&w=1080",
+      "location": "Angola",
+      "days": 2,
+      "schedule": [],
+      "likes": 0,
+      "Members": [],
+      "dates": [
+        "2023/06/15",
+        "2023/06/16"
+      ],
+      "id": 4
+    },
+    {
+      "creatorId": "12345",
+      "postTitle": "Trip to Anguilla",
+      "picturePath": "https://images.unsplash.com/photo-1579907631727-d3916f67c14c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTY0NjV8MHwxfHNlYXJjaHw5fHxBbmd1aWxsYXxlbnwwfHx8fDE2ODYyNDU1NTl8MA&ixlib=rb-4.0.3&q=80&w=1080",
+      "location": "Anguilla",
+      "days": 1,
+      "schedule": [],
+      "likes": 0,
+      "Members": [],
+      "dates": [
+        "2023/06/09",
+        "2023/06/09"
+      ],
+      "id": 5
+    },
+    {
+      "creatorId": "12345",
+      "postTitle": "Trip to Afghanistan",
+      "picturePath": "https://images.unsplash.com/photo-1635006304757-a02d75887177?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTY0NjV8MHwxfHNlYXJjaHwzfHxBZmdoYW5pc3RhbnxlbnwwfHx8fDE2ODYxNjIwNTh8MA&ixlib=rb-4.0.3&q=80&w=1080",
+      "location": "Afghanistan",
+      "days": 1,
+      "schedule": [],
+      "likes": 0,
+      "Members": [],
+      "dates": [
+        "2023/06/09",
+        "2023/06/09"
+      ],
+      "id": 6
     }
   ]
 }

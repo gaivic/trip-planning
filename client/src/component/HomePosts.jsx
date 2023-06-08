@@ -29,7 +29,7 @@ export function OtherPosts(props) {
     const chunk = otherposts.slice(i, i+3);
     const posts = chunk.map((item) => {
       return(
-        <div className='post rounded-2xl'>
+        <div className='post rounded-2x'>
           <img src="images/travel.jpg" className='rounded-xl h-3/4 w-full object-cover' />
           <div className='w-full h-1/4'>
             <p className=' text-xl text-left'>{item.postTitle}</p>
@@ -42,7 +42,7 @@ export function OtherPosts(props) {
       )
     });
     const row = (
-      <div className='min-h-full w-full flex justify-between mb-5'>
+      <div className={`min-h-full w-full flex mb-5`}>
         {posts}
       </div>
     )

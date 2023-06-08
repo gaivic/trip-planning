@@ -22,7 +22,7 @@ export function Bookmarks(props) {
       )
     });
     const row = (
-      <div className="row w-full flex justify-between mb-5">
+      <div className="row w-full flex mb-5">
         {posts}
       </div>
     )
@@ -53,7 +53,7 @@ export function Published(props) {
       )
     });
     const row = (
-      <div className="row w-full flex justify-between mb-5">
+      <div className="row w-full flex mb-5">
         {posts}
       </div>
     )
@@ -84,7 +84,7 @@ export function PastEvents(props) {
       )
     });
     const row = (
-      <div className="row w-full flex justify-between mb-5">
+      <div className="row w-full flex mb-5">
         {posts}
       </div>
     )

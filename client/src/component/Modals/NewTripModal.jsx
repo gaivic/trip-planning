@@ -4,11 +4,12 @@ import useNewTripModal from '../../hooks/useNewTripModal'
 import Heading from '../Heading';
 import FriendBox from '../inputs/FriendsInput';
 import CountrySelect from '../inputs/CountrySelect';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import axios from 'axios';
 import Input from '../inputs/Input';
 import DatePicker from '../inputs/DatePicker';
 import { DateRange } from 'react-date-range';
+import moment from 'moment';
 
 
 
@@ -21,7 +22,8 @@ const STEPS = {
     DATES: 1,
     IMAGES: 2,
     FRIENDS: 3,
-    INFO: 4,
+    CREATE: 4,
+    INFO: 5
 };
 
 
@@ -31,17 +33,35 @@ const NewTripModal = () => {
 
     // state
     const [step, setStep] = useState(STEPS.LOCATION);
-    const [selectedPhoto, setSelectedPhoto] = useState(null);
     const [randomPhotoNum, setRandomPhotoNum] = useState(Math.floor(Math.random() * 10));
 
 
+    const closeAndReset = () => {
+        reset();
+        setState([{startDate: new Date(),endDate: new Date(),key: 'selection'}])
+        setStep(STEPS.LOCATION);
+        newTripModal.onClose();
+    }
+
     // for changing steps
     const onBack = () => {
-        setStep((value) => value - 1);
+        if (step === STEPS.INFO) {
+            closeAndReset();
+        }
+        else {
+            setStep((value) => value - 1);
+        }
     }
     const onNext = () => {
+        // if (step === STEPS.CREATE) {
+        //     // submit !!!
+        //     submitTrip(watch());
+        //     setStep((value) => value + 1);
+        // }
         if (step === STEPS.INFO) {
-            submitTrip(watch());
+            // now just close it
+            // TODO: go into planning trip page
+            closeAndReset();
         }
         else {
             setStep((value) => value + 1);
@@ -49,15 +69,22 @@ const NewTripModal = () => {
     }
     const actionLabel = useMemo(() => {
         // if last Step
-        if (step === STEPS.INFO) {
+        if (step === STEPS.CREATE) {
             return 'Create';
+        }
+        if (step === STEPS.INFO) {
+            return 'Start Planning';
         }
         return 'Next';
     }, [step]);
+
     const secondaryActionLabel = useMemo(() => {
         // if first step
         if (step === STEPS.LOCATION) {
             return undefined;
+        }
+        if (step === STEPS.INFO) {
+            return 'Not now';
         }
         return 'Back';
     })
@@ -91,7 +118,7 @@ const NewTripModal = () => {
                 try {
                     // Update selected photo based on the country and randomPhotoIndex
                     const photoUrl = await getDefaultPhoto(location.label);
-                    setSelectedPhoto(photoUrl);
+                    setCustomValue('imageSrc', photoUrl);
                 } catch (error) {
                     console.log('Error fetching default photo:', error);
                 }
@@ -115,14 +142,54 @@ const NewTripModal = () => {
         defaultValues: {
             location: null,
             imageSrc: '',
-            price: 1,
             title: '',
-            description: '',
         }
     });
 
     const location = watch('location');
     const title = watch('title');
+    const imageSrc = watch('imageSrc');
+
+    const onSubmit = (data) => {
+        if (step !== STEPS.CREATE) {
+            return onNext();
+        }
+
+        
+
+        const postData = {
+            creatorId: "12345",
+            postTitle: title,
+            picturePath: imageSrc,
+            location: location.label,
+            days: calculateDays(),
+            schedule: [],
+            likes: 0,
+            Members: [],
+            dates: [startDateString(), endDateString()],
+        };
+
+        console.log([postData]);
+        axios.post('http://localhost:3030/posts', postData)
+            .then((response) => {
+                if (response.status === 201) {
+                    console.log('Trip created successfully:', response.data);
+                    // Handle any further actions after successful creation of the trip
+                } else {
+                    console.log('Failed to create trip:', response.status);
+                    // Handle the error case if the trip creation fails
+                }
+            })
+
+        onNext();
+        // .then(() => {
+        //     reset();
+        //     setStep(STEPS.LOCATION);
+        // })
+
+
+    }
+
 
     const setCustomValue = (id, value) => {
         setValue(id, value, {
@@ -143,31 +210,13 @@ const NewTripModal = () => {
             try {
                 // Update selected photo based on the country
                 const photoUrl = await getDefaultPhoto(value.label);
-                setSelectedPhoto(photoUrl);
+                setCustomValue('imageSrc', photoUrl);
             } catch (error) {
                 console.log('Error fetching default photo:', error);
             }
         } else {
             setCustomValue('title', '');
-            setSelectedPhoto(null);
-        }
-    };
-
-    const submitTrip = async (data) => {
-        try {
-            // Make a POST request to the appropriate endpoint of your JSON Server API
-            const response = await axios.post('http://localhost:3030/posts', data);
-
-            if (response.status === 201) {
-                console.log('Trip created successfully:', response.data);
-                // Handle any further actions after successful creation of the trip
-            } else {
-                console.log('Failed to create trip:', response.status);
-                // Handle the error case if the trip creation fails
-            }
-        } catch (error) {
-            console.log('Error creating trip:', error);
-            // Handle any error that occurs during the POST request
+            setCustomValue('imageSrc', '');
         }
     };
 
@@ -177,18 +226,42 @@ const NewTripModal = () => {
 
     // for date picker
     // Add these lines at the top of your component
-    const [selectedDate, setSelectedDate] = useState({
-        startDate: new Date(),
-        endDate: new Date(),
-    });
+    const [state, setState] = useState([
+        {
+            startDate: new Date(),
+            endDate: new Date(),
+            key: 'selection'
+        }
+    ]);
+
+    // Function to calculate the number of days
+    const calculateDays = () => {
+        const { startDate, endDate } = state[0]; // Extract the startDate and endDate from the state
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24))+1; // Calculate the difference in days
+
+        return days;
+    };
+
+    const startDateString = () => {
+        return (
+            moment(state[0].startDate).format("YYYY/MM/DD")
+        )
+    } 
+
+    const endDateString = () => {
+        return (
+            moment(state[0].endDate).format("YYYY/MM/DD")
+        )
+    }
+    
 
     useEffect(() => {
-        console.log(selectedDate.endDate, selectedDate.startDate);
-    }, [selectedDate])
-    const disabledDates = []; // Define your disabled dates array here 
+        console.log(state[0]);
+    }, [state])
 
-
-    // STEP 1: 
+    // STEP 1: choose place
     let bodyContenet = (
         <div className='flex flex-col gap-8'>
             <Heading
@@ -204,7 +277,7 @@ const NewTripModal = () => {
         </div>
     )
 
-    // STEP 2: 
+    // STEP 2: choose date
     if (step === STEPS.DATES) {
         bodyContenet = (
             <div className='flex flex-col gap-8'>
@@ -213,18 +286,19 @@ const NewTripModal = () => {
                     subtitle=""
                 />
                 <div className="w-full">
-                    <DatePicker
-                        value={selectedDate}
-                        onChange={(value) => { }}
-                        disabledDates={disabledDates}
+                    <DateRange
+                        editableDateInputs={true}
+                        minDate={new Date()}
+                        onChange={item => setState([item.selection])}
+                        moveRangeOnFirstSelection={false}
+                        ranges={state}
                     />
                 </div>
-
             </div>
         )
     }
 
-    // STEP 3:
+    // STEP 3: choose image
     if (step === STEPS.IMAGES) {
         bodyContenet = (
             <div className='flex flex-col gap-8'>
@@ -232,10 +306,10 @@ const NewTripModal = () => {
                     title="Select the photo for your trip"
                     subtitle="Get a nice picture"
                 />
-                {selectedPhoto && (
+                {imageSrc && (
                     // Display selected photo
                     <div className='relative'>
-                        <img src={selectedPhoto} alt="Selected Photo" className="rounded-xl shadow-lg object-cover aspect-[4/3] " />
+                        <img src={imageSrc} alt="Selected Photo" className="rounded-xl shadow-lg object-cover aspect-[4/3] " />
                         <button className='pt-4 text-md text-gray-600 ' onClick={handleChangePhoto}>change a new photo</button>
                     </div>
                 )}
@@ -243,7 +317,7 @@ const NewTripModal = () => {
         )
     }
 
-    // STEP 3:
+    // STEP 4: choose friends
     if (step === STEPS.FRIENDS) {
         bodyContenet = (
             <div className='flex flex-col gap-8'>
@@ -264,31 +338,80 @@ const NewTripModal = () => {
         )
     }
 
-    // STEP 4:
-    if (step === STEPS.INFO) {
+    // STEP 5: change title
+    if (step === STEPS.CREATE) {
         bodyContenet = (
             <div className='flex flex-col gap-8'>
                 <Heading
                     title="Give your trip a title "
                     subtitle="Or use a default name"
                 />
-                <Input id='title' label='Title' defaultValue={`Trip to ${location?.label || ""}`} errors={errors} required />
-
+                <Input
+                    id='title'
+                    label='Title'
+                    value={title}
+                    errors={errors}
+                    required
+                    onChange={(e) => setCustomValue('title', e.target.value)}
+                />
             </div>
-        )
+        );
     }
+
+
+    // STEP 6: look information
+    if (step === STEPS.INFO) {
+        bodyContenet = (
+            <div className='flex flex-col gap-8'>
+                <Heading
+                    title={title}
+                    center
+                />
+                <div className='relative text-lg text-gray-900 font-semibold text-left'>
+                    <img
+                        src={imageSrc}
+                        alt="Selected Photo"
+                        className="rounded-xl shadow-lg object-cover aspect-[5/3]"
+                    />
+                    {/* <div className="mt-10">
+                        <span className="text-gray-700 px-3">Trip Title:</span> {title || ''}
+                    </div> */}
+                    <div className="mt-3">
+                        <span className="text-gray-700 px-3">Location:</span> {location?.label || ''}
+                    </div>
+                    <div className="mt-3">
+                        <span className="text-gray-700 px-3">Members:</span>
+                    </div>
+                    {/* <div className="pl-4"> */}
+                    {/* Render the selected friends */}
+                    {/* {friends.map((item) => (
+                            <div key={item.name} className="ml-2">
+                                {item.name}
+                            </div>
+                        ))} */}
+                    {/* </div> */}
+                    <div className="mt-3">
+                        <span className="text-gray-700 px-3">Dates:</span> {startDateString()} - {endDateString()}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
 
     return (
         <>
             <Modal
                 isOpen={newTripModal.isOpen}
                 onClose={newTripModal.onClose}
-                onSubmit={onNext}
+                onSubmit={handleSubmit(onSubmit)}
                 actionLabel={actionLabel}
                 secondaryActionLabel={secondaryActionLabel}
                 secondaryAction={step === STEPS.LOCATION ? undefined : onBack}
-                title="Let's create your Trip !"
-                body={bodyContenet} />
+                title={step === STEPS.INFO ? "This is your trip info" : "Let's create your Trip !"}
+                body={bodyContenet}
+                closeAndReset={step === STEPS.INFO ? closeAndReset : undefined}
+            />
         </>
     )
 }

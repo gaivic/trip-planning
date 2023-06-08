@@ -14,7 +14,8 @@ const Modal = ({
     footer,
     disabled,
     secondaryAction,
-    secondaryActionLabel
+    secondaryActionLabel,
+    closeAndReset
 }) => {
     const [showModal, setShowModal] = useState(isOpen);
 
@@ -67,7 +68,7 @@ const Modal = ({
           z-50 
           outline-none 
           focus:outline-none
-          bg-gray-900/70
+          !bg-gray-900/70
         "
             >
                 <div className="
@@ -128,7 +129,7 @@ const Modal = ({
                     absolute
                     left-9
                   "
-                                    onClick={handleClose}
+                                    onClick={closeAndReset|| handleClose}
                                 >
                                     <IoMdClose size={18} />
                                 </button>

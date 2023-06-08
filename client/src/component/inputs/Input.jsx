@@ -3,10 +3,11 @@ const Input = ({
     label,
     type = "text",
     disabled,
-    defaultValue,
+    value,
     formatPrice,
     required,
     errors,
+    onChange
 }) => {
     return (
         <div className="w-full relative">
@@ -25,9 +26,10 @@ const Input = ({
             <input
                 id={id}
                 disabled={disabled}
-                defaultValue={defaultValue}
+                value={value}
                 placeholder=" "
                 type={type}
+                onChange={onChange}
                 className={`
           peer
           w-full

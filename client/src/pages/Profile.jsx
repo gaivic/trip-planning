@@ -1,23 +1,58 @@
 import { useEffect, useState } from "react";
 import { BsBookmarkFill } from "react-icons/bs";
 
+import { Bookmarks, Published, PastEvents } from "../component/ProfilePosts";
+import { getPostsBookmarks, getPostsPublished, getPostsPast } from "../api/posts";
+
 import './Profile.css'
 
 export default function Profile () {
   const [empty, setEmpty] = useState(false);
   const [activeButton, setActiveButton] = useState("pastEvents");
+  const [pastposts, setPastPosts] = useState([]);
+  const [publishedposts, setPublishedPosts] = useState([]);
+  const [bookmarkposts, setBookmarkPosts] = useState([]);
 
   const handleButtonClick = (buttonId) => {
     setActiveButton(buttonId);
+    if (buttonId === 'pastEvents') {
+      setEmpty(pastposts.length > 0 ? false : true);
+    } else if (buttonId === 'bookmarks') {
+      setEmpty(bookmarkposts.length > 0 ? false : true);
+    } else if (buttonId === 'published') {
+      setEmpty(publishedposts.length > 0 ? false : true);
+    }
   };
+
+  const getPastPosts = async () => {
+    const fetched = await getPostsPast();
+    setPastPosts(fetched);
+  }
+
+  const getPublishedPosts = async () => {
+    const fetched = await getPostsPublished();
+    setPublishedPosts(fetched);
+  }
+
+  const getBookmarkPosts = async () => {
+    const fetched = await getPostsBookmarks();
+    setBookmarkPosts(fetched);
+  }
+
+  useEffect(() => {
+    getPastPosts();
+    getBookmarkPosts();
+    getPublishedPosts();
+  }, []);
+
 
   let componentToRender;
   if (activeButton === 'pastEvents') {
-    componentToRender = <Posts />;
+    componentToRender = <PastEvents posts={pastposts}/>;
   } else if (activeButton === 'bookmarks') {
-    componentToRender = <Defaultwords />;
+    componentToRender = <Bookmarks posts={bookmarkposts} />;
   } else if (activeButton === 'published') {
-    componentToRender = <Posts />;
+    componentToRender = <Published posts={publishedposts}/>;
   }
 
   return (
@@ -51,8 +86,8 @@ export default function Profile () {
         </button>
       </div>
       <div className="w-full">
-        {empty && <Defaultwords/>}
-        {componentToRender}
+        {empty ? <Defaultwords/> : componentToRender}
+        {/* {posts.length > 0 && componentToRender} */}
       </div>
     </div>
   )
@@ -66,7 +101,7 @@ const Defaultwords = () => {
   )
 }
 
-const Posts = () => {
+const Bookmark = () => {
   return(
     <div className="w-full flex justify-center">
       <div className=" w-3/4">
@@ -85,7 +120,7 @@ const Posts = () => {
           <div className="post bg-[#35bdb815] rounded-lg"></div>
           <div className="post bg-[#35bdb815] rounded-lg"></div>
         </div>
-        <div className="row flex justify-between mb-5">
+        <div className="row w-full flex justify-between mb-5">
           <div className="post bg-[#35bdb815] rounded-lg"></div>
           <div className="post bg-[#35bdb815] rounded-lg"></div>
           <div className="post bg-[#35bdb815] rounded-lg"></div>

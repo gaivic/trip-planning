@@ -9,6 +9,7 @@ import axios from 'axios';
 import Input from '../inputs/Input';
 import DatePicker from '../inputs/DatePicker';
 import { DateRange } from 'react-date-range';
+import { useNavigate } from "react-router-dom";
 import moment from 'moment';
 
 
@@ -34,6 +35,7 @@ const NewTripModal = () => {
     // state
     const [step, setStep] = useState(STEPS.LOCATION);
     const [randomPhotoNum, setRandomPhotoNum] = useState(Math.floor(Math.random() * 10));
+    const navigate = useNavigate();
 
 
     const closeAndReset = () => {
@@ -41,6 +43,7 @@ const NewTripModal = () => {
         setState([{startDate: new Date(),endDate: new Date(),key: 'selection'}])
         setStep(STEPS.LOCATION);
         newTripModal.onClose();
+        navigate(0);
     }
 
     // for changing steps

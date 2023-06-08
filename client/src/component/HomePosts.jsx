@@ -6,7 +6,7 @@ export function MainPost(props) {
     <div className="mainpost mb-10 h-80 flex flex-col rounded-3xl mx-16">
       <p className='text-2xl font-normal text-end pr-3'>{post.dates[0]}</p>
       <div className='flex-grow overflow-hidden rounded-3xl'>
-        <img src="images/travel.jpg" className='h-full w-full object-cover' />
+        <img src={post.picturePath} className='h-full w-full object-cover' />
       </div>
       <div className='h-20 flex items-center'>
         <p className='w-1/3 text-2xl font-medium text-start flex items-center'><IoIosPin />{post.location}</p>
@@ -30,7 +30,7 @@ export function OtherPosts(props) {
     const posts = chunk.map((item) => {
       return(
         <div className='post rounded-2x'>
-          <img src="images/travel.jpg" className='rounded-xl h-3/4 w-full object-cover' />
+          <img src={item.picturePath} className='rounded-xl h-3/4 w-full object-cover' />
           <div className='w-full h-1/4'>
             <p className=' text-xl text-left'>{item.postTitle}</p>
             <div className='flex items-center justify-between'>

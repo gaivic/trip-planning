@@ -10,7 +10,7 @@ export function Bookmarks(props) {
     const posts = chunk.map((item) => {
       return(
         <div className="post rounded-lg bg-[#35bdb815]">
-          <img src="images/travel.jpg" className='rounded-xl h-4/5 w-full object-cover'/>
+          <img src={item.picturePath} className='rounded-xl h-4/5 w-full object-cover'/>
           <div className='w-full h-1/5 flex items-center justify-between'>
             <p className='ml-1 text-2xl font-medium text-left'>{item.postTitle}</p>
             <div className="flex items-center justify-between">
@@ -42,7 +42,7 @@ export function Published(props) {
     const posts = chunk.map((item) => {
       return(
         <div className="post rounded-lg bg-[#35bdb815]">
-          <img src="images/travel.jpg" className='rounded-xl h-4/5 w-full object-cover'/>
+          <img src={item.picturePath} className='rounded-xl h-4/5 w-full object-cover'/>
           <div className='w-full h-1/5 flex items-center justify-between'>
             <p className='ml-1 text-2xl font-medium text-left'>{item.postTitle}</p>
             <div className="flex items-center justify-between">
@@ -73,7 +73,7 @@ export function PastEvents(props) {
     const posts = chunk.map((item) => {
       return(
         <div className="post rounded-lg bg-[#35bdb815]">
-          <img src="images/travel.jpg" className='rounded-xl h-4/5 w-full object-cover'/>
+          <img src={item.picturePath} className='rounded-xl h-4/5 w-full object-cover'/>
           <div className='w-full h-1/5 flex items-center justify-between'>
             <p className='ml-1 text-2xl font-medium text-left'>{item.postTitle}</p>
             <div className="flex items-center justify-between">

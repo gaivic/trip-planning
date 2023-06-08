@@ -4,7 +4,7 @@ import {FriendPosts} from '../component/FriendPost';
 import {FriendList} from '../component/FriendList';
 import { getPostsHome, getFriendList } from '../api/posts';
 import { BsBookmark, BsBookmarkFill, BsHeart, BsHeartFill } from "react-icons/bs";
-import { GrAddCircle } from "react-icons/gr";
+import { IoMdAdd } from "react-icons/io";
 
 export default function Friends() {
     const [posts, setPosts] = useState([]);
@@ -48,9 +48,9 @@ export default function Friends() {
                         <div className="search rounded-2xl border border-gray-400">
                             <p className='text-xl text-left ml-5'>Search Friend</p>
                         </div>
-                        <div className='add w-70 h-20 mt-4 mx-auto flex border border-gray-400'>
-                            <GrAddCircle size={50} className='mt-1 ml-6'/>
-                            <p className='text-gray-600 text-xl mt-4 ml-3'>Add New Friends</p>
+                        <div className='add w-70 h-20 mt-4 mx-auto flex border justify-center items-center border-gray-400'>
+                            <IoMdAdd size={50} className='adds mt-1 bg-blue-gray-300 rounded-full p-1'/>
+                            <p className='text-gray-600 text-xl ml-3'>Add New Friends</p>
                         </div>
                     </div>
                     <div className="overflow-y-auto h-96">

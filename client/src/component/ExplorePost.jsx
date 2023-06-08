@@ -14,7 +14,7 @@ export function ExplorePosts(props) {
                 <p className='text-2xl text-left font-semibold mb-2 ml-1 flex items-center'>{item.postTitle}</p>
                 <IoIosPin className='ml-auto scale-150 mb-2'/><p className='text-xl mb-2 mx-2 flex items-center'>{item.location}</p>
             </div>
-            <img src="images/travel.jpg" className='rounded-xl h-3/4 w-full object-cover' />
+            <img src={item.picturePath} className='rounded-xl aspect-[4/3] w-full object-cover' />
             <div className='w-full h-1/4'>
               <div className='flex items-center justify-between'>
                 <div className='w-18 h-6 my-2 flex'>
@@ -32,7 +32,7 @@ export function ExplorePosts(props) {
         )
       });
       const row = (
-        <div className='min-h-full w-full flex justify-between grid grid-cols-3'>
+        <div className='min-h-full w-full grid grid-cols-3'>
           {posts}
         </div>
       )

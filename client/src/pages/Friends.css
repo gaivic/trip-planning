@@ -23,7 +23,7 @@
 
 .fright {
     flex: 0.3;
-    padding: 3rem;
+    padding: 3rem 5rem;
 }
 
 .fright .py-5 {
@@ -41,4 +41,8 @@
 
 .fixed {
     background-color: rgba(179, 236, 236, 0.35);
+}
+
+.adds {
+    background-color: rgba(179, 236, 236, 0.438);
 }

@@ -1,13 +1,13 @@
 import logo from './logo.svg'
 import './App.css'
 
-import Navbar from './component/Navbar.jsx'
 import Header from './component/Header.jsx'
 import Home from './pages/Home.jsx'
 import Explore from './pages/Explore.jsx';
-import Friends from './pages/Friends.jsx';
 import Profile from './pages/Profile.jsx';
-import StartPlan from './pages/StartPlan';
+import Friends from './pages/Friends';
+// change startplan page into Modal 
+// import StartPlan from './pages/StartPlan';
 import { useLocation } from 'react-router-dom';
 
 import { Route, Routes } from 'react-router-dom'
@@ -23,10 +23,10 @@ function App() {
       <div className='body'>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/Explore" element={<Explore />} />
-          <Route path="/Friends" element={<Friends />} />
-          <Route path="/profile" element={<Home />} />
-          <Route path="/start-plan" element={<StartPlan />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/friends" element={<Friends />} />
+          <Route path="/profile" element={<Profile />} />
+          {/* <Route path="/start-plan" element={<StartPlan />} /> */}
         </Routes>
       </div>
     </div>

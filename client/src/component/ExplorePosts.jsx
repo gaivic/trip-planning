@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { IoIosPin } from 'react-icons/io';
 import { BsBookmark, BsBookmarkFill, BsHeart, BsHeartFill } from "react-icons/bs";
 
@@ -9,13 +10,13 @@ export function ExplorePosts(props) {
       const chunk = exploreposts.slice(i, i+3);
       const posts = chunk.map((item) => {
         return(
-          <div className='posts rounded-2xl m-6 p-4'>
+          <div className='posts rounded-2xl m-6 px-4 py-2'>
             <div className='flex items-center'>
                 <p className='text-2xl text-left font-semibold mb-2 ml-1 flex items-center'>{item.postTitle}</p>
                 <IoIosPin className='ml-auto scale-150 mb-2'/><p className='text-xl mb-2 mx-2 flex items-center'>{item.location}</p>
             </div>
             <img src={item.picturePath} className='rounded-xl aspect-[4/3] w-full object-cover' />
-            <div className='w-full h-1/4'>
+            <div className='w-full'>
               <div className='flex items-center justify-between'>
                 <div className='w-18 h-6 my-2 flex'>
                   <img src="images/default.png" className='round-image mx-1' />
@@ -24,7 +25,7 @@ export function ExplorePosts(props) {
                 <div className='flex'>
                   <BsBookmark className='m-1' />
                   <BsHeart className='m-1' />
-                  <p className='text-gray-600 mr-2'>{item.likes}</p>
+                  <p className='text-gray-600 mr-2'>{item.likes.length}</p>
                 </div>
               </div>
             </div>

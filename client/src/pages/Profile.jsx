@@ -7,7 +7,7 @@ import { getPostsBookmarks, getPostsPublished, getPostsPast } from "../api/posts
 import './Profile.css'
 
 export default function Profile () {
-  const [empty, setEmpty] = useState(false);
+  const [empty, setEmpty] = useState(true);
   const [activeButton, setActiveButton] = useState("pastEvents");
   const [pastposts, setPastPosts] = useState([]);
   const [publishedposts, setPublishedPosts] = useState([]);
@@ -15,13 +15,7 @@ export default function Profile () {
 
   const handleButtonClick = (buttonId) => {
     setActiveButton(buttonId);
-    if (buttonId === 'pastEvents') {
-      setEmpty(pastposts.length > 0 ? false : true);
-    } else if (buttonId === 'bookmarks') {
-      setEmpty(bookmarkposts.length > 0 ? false : true);
-    } else if (buttonId === 'published') {
-      setEmpty(publishedposts.length > 0 ? false : true);
-    }
+    setDefault();
   };
 
   const getPastPosts = async () => {
@@ -39,10 +33,21 @@ export default function Profile () {
     setBookmarkPosts(fetched);
   }
 
+  const setDefault = () => {
+    if (activeButton === 'pastEvents') {
+      setEmpty(pastposts.length > 0 ? false : true);
+    } else if (activeButton === 'bookmarks') {
+      setEmpty(bookmarkposts.length > 0 ? false : true);
+    } else if (activeButton === 'published') {
+      setEmpty(publishedposts.length > 0 ? false : true);
+    }
+  }
+
   useEffect(() => {
     getPastPosts();
     getBookmarkPosts();
     getPublishedPosts();
+    setDefault();
   }, []);
 
 

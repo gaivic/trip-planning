@@ -167,7 +167,6 @@ const NewTripModal = () => {
             location: location.label,
             days: calculateDays(),
             schedule: [],
-            likes: 0,
             Members: [],
             dates: [startDateString(), endDateString()],
         };

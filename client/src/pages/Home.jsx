@@ -36,7 +36,6 @@ export default function Home() {
     const getPosts = async () => {
       const fetched = await getPostsHome();
       setPosts(fetched);
-      console.log(`its ${fetched[0].creatorId}`);
     }
 
     getPosts();
@@ -47,7 +46,7 @@ export default function Home() {
       <NewTripModal isOpen />
       <div className="body flex w-full">
         <div className="left overflow-y-auto">
-          <div className="container w-3/5 min-h-full px-4 pt-8 pb-0 m-auto">
+          <div className="container w-3/5 min-h-full pt-8 pb-0 m-auto">
             <h1 className="text-left text-4xl font-bold pl-2 mb-5">Upcoming Trips</h1>
             {posts.length > 0 && <MainPost posts={posts}/>}
             <div>

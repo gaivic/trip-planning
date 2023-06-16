@@ -166,7 +166,31 @@ const NewTripModal = () => {
             picturePath: imageSrc,
             location: location.label,
             days: calculateDays(),
-            schedule: [],
+            schedule: [
+                [
+                    "ChIJUZ-WfXKpQjQR0j4ggToD89A", 
+                    "ChIJxccAAQ2pQjQRgGoVa3_yuI4"
+                ],
+                [
+                    "ChIJWfZUVq6pQjQR3Z-1OU8ILgo" ,
+                    "ChIJnzZlOoCpQjQRH-WG9egh-2E" ,
+                    "ChIJDRFd54KrQjQRMVgkMiJTbMM" 
+                ],
+                [
+                    "ChIJP7Zo9S6nQjQRK2KoXGG9_w8" ,
+                    "ChIJZdTFIrmfQjQRJ1tSbSwM_Go" 
+                ],
+                [
+                    "ChIJWfZUVq6pQjQR3Z-1OU8ILgo" ,
+                    "ChIJnzZlOoCpQjQRH-WG9egh-2E" ,
+                    "ChIJDRFd54KrQjQRMVgkMiJTbMM" 
+                ],
+                [
+                    "ChIJWfZUVq6pQjQR3Z-1OU8ILgo" ,
+                    "ChIJZdTFIrmfQjQRJ1tSbSwM_Go" ,
+                    "ChIJUZ-WfXKpQjQR0j4ggToD89A" 
+                ]
+            ],
             Members: [],
             dates: [startDateString(), endDateString()],
         };

@@ -19,12 +19,7 @@ const postSchema = mongoose.Schema(
     days: String,
     schedule: {
       type: [
-        {
-          aday: {
-            type: [{placeId: String}],
-            default: [],
-          }
-        },
+            [String]
       ],
       default: [],
     },

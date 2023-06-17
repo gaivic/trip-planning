@@ -6,6 +6,7 @@ import Home from './pages/Home.jsx'
 import Explore from './pages/Explore.jsx';
 import Profile from './pages/Profile.jsx';
 import Friends from './pages/Friends';
+import CheckPage from './pages/CheckPage';
 // change startplan page into Modal 
 // import StartPlan from './pages/StartPlan';
 import { useLocation } from 'react-router-dom';
@@ -14,7 +15,7 @@ import { Route, Routes } from 'react-router-dom'
 
 function App() {
   const location = useLocation();
-  const hideNavbarRoutes = ['/otherpages'];
+  const hideNavbarRoutes = ['/check'];
 
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/explore" element={<Explore />} />
           <Route path="/friends" element={<Friends />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/check" element={<CheckPage />} />
           {/* <Route path="/start-plan" element={<StartPlan />} /> */}
         </Routes>
       </div>

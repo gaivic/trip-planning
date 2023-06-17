@@ -3,9 +3,8 @@ import axios from "axios";
 const postBaseUrl = 'http://localhost:3030/posts'
 const friendBaseUrl = 'http://localhost:3030/friends'
 
-export async function getPostsHome() {
-  let userId = "12345";
-  let url = `${postBaseUrl}/home/${userId}`
+export async function getPostsHome(userName) {
+  let url = `${postBaseUrl}/home/${userName}`
   console.log(url);
   try {
     const res = await axios.get(url);
@@ -17,9 +16,10 @@ export async function getPostsHome() {
   }
 }
 
-export async function getPostsPast() {
+export async function getPostsPast(userId) {
   try {
-    const res = await axios.get(postBaseUrl);
+    let url = `${postBaseUrl}/past/${userId}`;
+    const res = await axios.get(url);
     const posts = await res.data;
     return posts;
   } catch (err) {
@@ -28,24 +28,26 @@ export async function getPostsPast() {
   }
 }
 
-export async function getPostsBookmarks() {
+export async function getPostsBookmarks(userId) {
   try {
-    const res = await axios.get(postBaseUrl);
+    let url = `${postBaseUrl}/bookmarks/${userId}`;
+    const res = await axios.get(url);
     const posts = await res.data;
     return posts;
   } catch (err) {
-    console.error('Error fetching data', err);
+    console.error('Error fetching data from bookmarks', err);
     return ([]);
   }
 }
 
-export async function getPostsPublished() {
+export async function getPostsPublished(userId) {
   try {
-    const res = await axios.get(postBaseUrl);
+    let url = `${postBaseUrl}/published/${userId}`;
+    const res = await axios.get(url);
     const posts = await res.data;
     return posts;
   } catch (err) {
-    console.error('Error fetching data', err);
+    console.error('Error fetching data from published', err);
     return ([]);
   }
 }

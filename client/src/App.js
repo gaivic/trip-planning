@@ -7,31 +7,43 @@ import Explore from './pages/Explore.jsx';
 import Profile from './pages/Profile.jsx';
 import Friends from './pages/Friends';
 import CheckPage from './pages/CheckPage';
+import { getUser, createUser } from './api/users';
 // change startplan page into Modal 
 // import StartPlan from './pages/StartPlan';
 import { useLocation } from 'react-router-dom';
-
 import { Route, Routes } from 'react-router-dom'
+import { useEffect } from 'react';
+
+import { Authenticator } from "@aws-amplify/ui-react";
+import '@aws-amplify/ui-react/styles.css';
 
 function App() {
   const location = useLocation();
   const hideNavbarRoutes = ['/check'];
 
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
+
+
   return (
-    <div className="App">
-      {!shouldHideNavbar && <Header/>}
-      <div className='body'>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/explore" element={<Explore />} />
-          <Route path="/friends" element={<Friends />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/check" element={<CheckPage />} />
-          {/* <Route path="/start-plan" element={<StartPlan />} /> */}
-        </Routes>
+    <Authenticator>
+    {({ signOut, user }) => {
+      return (
+      <div className="App">
+        {!shouldHideNavbar && <Header/>}
+        <div className='body'>
+          <Routes>
+            <Route path="/" element={<Home user={user}/>} />
+            <Route path="/explore" element={<Explore user={user}/>} />
+            <Route path="/friends" element={<Friends user={user}/>} />
+            <Route path="/profile" element={<Profile user={user} signOut={signOut}/>} />
+            <Route path="/check" element={<CheckPage user={user}/>} />
+            {/* <Route path="/start-plan" element={<StartPlan />} /> */}
+          </Routes>
+        </div>
       </div>
-    </div>
+    )
+    }}
+    </Authenticator>
   );
 }
 

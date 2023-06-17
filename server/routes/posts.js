@@ -6,9 +6,9 @@ const router = express.Router();
 /* READ */
 router.get("/home/:id", getPostsHome);
 router.get("/explore", getPostsExplore);
-router.get("/profile/past/:id", getPostsPast);
-router.get("/profile/bookmarks/:id", getPostsBookmarks);
-router.get("/profile/published/:id", getPostsPublished);
+router.get("/past/:id", getPostsPast);
+router.get("/bookmarks/:id", getPostsBookmarks);
+router.get("/published/:id", getPostsPublished);
 
 /* UPDATE */
 // router.patch("/:id/like", likePost);

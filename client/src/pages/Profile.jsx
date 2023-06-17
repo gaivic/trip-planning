@@ -3,11 +3,13 @@ import { BsBookmarkFill } from "react-icons/bs";
 
 import { Bookmarks, Published, PastEvents } from "../component/ProfilePosts";
 import { getPostsBookmarks, getPostsPublished, getPostsPast } from "../api/posts";
+import { getUser, createUser } from "../api/users";
 
 import './Profile.css'
 
-export default function Profile () {
-  const [empty, setEmpty] = useState(true);
+export default function Profile ({ user, signOut }) {
+  const [User, setUser] = useState({})
+  const [empty, setEmpty] = useState(false);
   const [activeButton, setActiveButton] = useState("pastEvents");
   const [pastposts, setPastPosts] = useState([]);
   const [publishedposts, setPublishedPosts] = useState([]);
@@ -19,18 +21,32 @@ export default function Profile () {
   };
 
   const getPastPosts = async () => {
-    const fetched = await getPostsPast();
+    const fetched = await getPostsPast(User._id);
     setPastPosts(fetched);
   }
 
   const getPublishedPosts = async () => {
-    const fetched = await getPostsPublished();
+    const fetched = await getPostsPublished(User._id);
     setPublishedPosts(fetched);
   }
 
   const getBookmarkPosts = async () => {
-    const fetched = await getPostsBookmarks();
+    const fetched = await getPostsBookmarks(User._id);
+    console.log(`fetched book marked post: ${fetched}`);
     setBookmarkPosts(fetched);
+  }
+
+  const getUserschema = async () => {
+    const fetched = await getUser(user);
+    if (fetched === null) {
+      console.log("not created yet");
+      const created = await createUser(user);
+      setUser(created);
+    }
+    else{
+      console.log(`fetched user schema: ${fetched}`);
+      setUser(fetched);
+    }
   }
 
   const setDefault = () => {
@@ -43,13 +59,25 @@ export default function Profile () {
     }
   }
 
+
+
   useEffect(() => {
+    setDefault();
+    getUserschema();
+  }, []);
+
+
+  useEffect(() => {
+    console.log(User);
     getPastPosts();
     getBookmarkPosts();
     getPublishedPosts();
+  }, [User]);
+  
+  useEffect(() => {
     setDefault();
-  }, []);
-
+  }, [pastposts, bookmarkposts, publishedposts]);
+  
 
   let componentToRender;
   if (activeButton === 'pastEvents') {
@@ -62,13 +90,16 @@ export default function Profile () {
 
   return (
     <div className="profile ">
-      <div className="person w-full h-48 border-b-2 flex items-center justify-center">
-        <div className='overflow-hidden h-20 w-20 text-white border border-gray-500 rounded-full'>
-            <img src="images/default.png" alt="" />
+      <div className="border-b-2">
+        <div className="person w-full h-48  flex items-center justify-center">
+          <div className='overflow-hidden h-20 w-20 text-white border border-gray-500 rounded-full'>
+              <img src="images/default.png" alt="" />
+          </div>
+          <div className="ml-5">
+            <p className="text-xl font-semibold">{user.username}</p>
+          </div>
         </div>
-        <div className="ml-5">
-          <p className="text-xl font-semibold">Adesanya</p>
-        </div>
+        <div className="flex justify-end"><button onClick={signOut}>Sign Out</button></div>
       </div>
       <div className="posts w-full flex justify-center mt-[-2px] mb-4">
         <button className="w-40 h-12 flex justify-center"

@@ -38,10 +38,11 @@ export const getPostsHome = async(req, res) => {
   console.log("in getpostshome");
   try {
     const { id } = req.params;
+    console.log(id);
     const today = new Date();
     const formatted = moment(today).format("YYYY/MM/DD");
-    console.log(formatted);
-    const posts = await Post.find({creatorId: id, "dates.1": { $gt: formatted } }).sort({ 'dates.0': 1});
+    const posts = await Post.find({creatorId: id, "dates.1": { $gte: formatted } }).sort({ 'dates.0': 1});
+    console.log(posts);
 
     res.status(200).json(posts);
   } catch (err) {
@@ -59,7 +60,9 @@ export const getPostsExplore = async(req, res) => {
 }
 
 export const getPostsPast = async(req, res) => {
+  console.log("in post past");
   try {
+    const { id } = req.params;
     const today = new Date();
     const formatted = moment(today).format("YYYY/MM/DD");
     const posts = await Post.find({ creatorId: id, "dates.1": { $lt: formatted } });
@@ -70,6 +73,7 @@ export const getPostsPast = async(req, res) => {
 }
 
 export const getPostsBookmarks = async(req, res) => {
+  console.log("in book mark");
   try {
     const { id } = req.params;
     const user = await User.findById(id);
@@ -84,9 +88,12 @@ export const getPostsBookmarks = async(req, res) => {
 }
 
 export const getPostsPublished = async(req, res) => {
+  console.log("postpublished");
   try {
     const { id } = req.params;
-    const posts = await Post.find({creatorId: id, published: true}).sort({ 'dates.0': 1});
+    const posts = await Post.find({published: true});
+    // const posts = await Post.find({creatorId: "12345", published: true}).sort({ 'dates.0': 1});
+    console.log(posts);
     res.status(200).json(posts);
   } catch (err) {
     res.status(404).json({ message: err })

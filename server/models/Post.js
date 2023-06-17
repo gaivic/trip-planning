@@ -5,14 +5,10 @@ const postSchema = mongoose.Schema(
     creatorId: {
       type: String,
       required: true,
-      min: 2,
-      max: 50,
     },
     postTitle: {
       type: String,
       required: true,
-      min: 2,
-      max: 50,
     },
     picturePath: String,
     location: String,

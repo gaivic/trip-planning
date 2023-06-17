@@ -11,6 +11,7 @@ import DatePicker from '../inputs/DatePicker';
 import { DateRange } from 'react-date-range';
 import { useNavigate } from "react-router-dom";
 import moment from 'moment';
+import { getUser, createUser } from '../../api/users';
 
 
 
@@ -28,15 +29,31 @@ const STEPS = {
 };
 
 
-const NewTripModal = () => {
+const NewTripModal = ({user}) => {
     // using the hooks
     const newTripModal = useNewTripModal();
 
     // state
     const [step, setStep] = useState(STEPS.LOCATION);
+    const [User, setUser] = useState({});
     const [randomPhotoNum, setRandomPhotoNum] = useState(Math.floor(Math.random() * 10));
     const navigate = useNavigate();
 
+    const getUserschema = async () => {
+        const fetchedUser = await getUser(user);
+        if (fetchedUser === null) {
+          console.log("not created yet");
+          const createdUser = await createUser(user);
+          setUser(createdUser);
+        }
+        else{
+          setUser(fetchedUser);
+          console.log(User);
+        }
+    }
+    useEffect(() => {
+        getUserschema();
+    }, []);
 
     const closeAndReset = () => {
         reset();
@@ -161,7 +178,7 @@ const NewTripModal = () => {
         
 
         const postData = {
-            creatorId: "12345",
+            creatorId: user.username,
             postTitle: title,
             picturePath: imageSrc,
             location: location.label,

@@ -26,7 +26,7 @@ function App() {
 
 
   return (
-    <Authenticator>
+    <Authenticator className='mt-12'>
     {({ signOut, user }) => {
       return (
       <div className="App">

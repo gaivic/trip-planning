@@ -30,7 +30,6 @@ export default function Home({ user }) {
 
   const getUserPosts = async () => {
     const fetchedUser = await getUser(user);
-    console.log(fetchedUser);
     if (fetchedUser.length === 0) {
       console.log("not created yet");
       const createdUser = await createUser(user);
@@ -90,50 +89,5 @@ export default function Home({ user }) {
       </div>
     </>
 
-  )
-}
-
-
-const Posts = () => {
-  return (
-    <div>
-    <div className='min-h-full w-full flex justify-between mb-5'>
-      <div className='post rounded-2xl'>
-        <img src="images/travel.jpg" className='rounded-xl h-3/4 w-full object-cover' />
-        <div className='w-full h-1/4'>
-          <p className=' text-xl text-left'>Trip to Japan</p>
-          <div className='flex items-center justify-between'>
-            <p className=' text-gray-600'>5/3 - 5/4</p>
-            <div className='w-6 h-6 mr-3'><img src="images/default.png" className='round-image ' /></div>
-          </div>
-        </div>
-      </div>
-      <div className='post rounded-2xl'>
-        <img src="images/gray.png" className='rounded-xl h-3/4 w-full object-cover' />
-        <div className='w-full h-1/4'>
-          <p className=' text-xl text-left'>Trip to Japan</p>
-          <div className='flex items-center justify-between'>
-            <p className=' text-gray-600'>5/3 - 5/4</p>
-            <div className='w-6 h-6 mr-3'><img src="images/default.png" className='round-image ' /></div>
-          </div>
-        </div>
-      </div>
-      <div className='post rounded-2xl'>
-        <img src="images/gray.png" className='rounded-xl h-3/4 w-full object-cover' />
-        <div className='w-full h-1/4'>
-          <p className=' text-xl text-left'>Trip to Japan</p>
-          <div className='flex items-center justify-between'>
-            <p className=' text-gray-600'>5/3 - 5/4</p>
-            <div className='w-6 h-6 mr-3'><img src="images/default.png" className='round-image ' /></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div className='min-h-full w-full flex justify-between mb-5'>
-      <div className='post bg-white rounded-2xl'></div>
-      <div className='post bg-white rounded-2xl'></div>
-      <div className='post bg-white rounded-2xl'></div>
-    </div>
-    </div>
   )
 }

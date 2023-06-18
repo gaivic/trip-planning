@@ -42,7 +42,6 @@ export const getPostsHome = async (req, res) => {
     const today = new Date();
     const formatted = moment(today).format("YYYY/MM/DD");
     const posts = await Post.find({ creatorId: id, "dates.1": { $gte: formatted } }).sort({ 'dates.0': 1 });
-    console.log(posts);
 
     res.status(200).json(posts);
   } catch (err) {
@@ -66,6 +65,7 @@ export const getPostsPast = async (req, res) => {
     const today = new Date();
     const formatted = moment(today).format("YYYY/MM/DD");
     const posts = await Post.find({ creatorId: id, "dates.1": { $lt: formatted } });
+    console.log(posts.length);
     res.status(200).json(posts);
   } catch (err) {
     res.status(404).json({ message: err })
@@ -76,11 +76,13 @@ export const getPostsBookmarks = async (req, res) => {
   console.log("in book mark");
   try {
     const { id } = req.params;
-    const user = await User.findById(id);
+    const user = await User.find({userName: id});
 
-    const bookmarkedPostIds = user.bookmarks;
+    const bookmarkedPostIds = user[0].bookmarks;
 
-    const posts = await Post.find({ _id: { $in: bookmarkedPostIds } });
+    const posts = await Post.find({_id: { $in: bookmarkedPostIds}});
+    console.log(`${posts.length}`)
+
     res.status(200).json(posts);
   } catch (err) {
     res.status(404).json({ message: err })
@@ -91,9 +93,10 @@ export const getPostsPublished = async (req, res) => {
   console.log("postpublished");
   try {
     const { id } = req.params;
-    const posts = await Post.find({ published: true });
+
+    const posts = await Post.find({creatorId: id, published: true});
+
     // const posts = await Post.find({creatorId: "12345", published: true}).sort({ 'dates.0': 1});
-    console.log(posts);
     res.status(200).json(posts);
   } catch (err) {
     res.status(404).json({ message: err })
@@ -151,9 +154,9 @@ export const bookmarkPost = async (req, res) => {
       user.bookmarks.push(id);
     }
 
-    const updatedPost = await post.save();
+    const updatedUser = await user.save();
 
-    res.status(200).json(updatedPost);
+    res.status(200).json(updatedUser);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }

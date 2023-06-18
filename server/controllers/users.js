@@ -42,7 +42,6 @@ export const getFriends = async (req, res) => {
     const user = await User.findById(id);
 
     const friends = await User.find({_id: { $in: user.friends } });
-    console.log(friends);
     res.status(200).json(friends);
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -55,7 +54,6 @@ export const getOtherUsers = async (req, res) => {
     const { id } = req.params;
     const user = await User.findById(id);
     const others = await User.find({$and: [{_id: { $nin: user.friends } }, { _id: { $ne: user._id }}]});
-    console.log(others);
     res.status(200).json(others);
   } catch (err) {
     res.status(404).json({ message: err.message });

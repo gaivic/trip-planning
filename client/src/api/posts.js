@@ -53,8 +53,21 @@ export async function getPostsPublished(userId) {
   }
 }
 
-export async function getPostsExplore() {
-  let url = `${postBaseUrl}/explore`
+export async function getPostsExplore(user) {
+  let url = `${postBaseUrl}/explore/${user.username}`
+  console.log(url);
+  try {
+    const res = await axios.get(url);
+    const posts = await res.data;
+    return posts;
+  } catch (err) {
+    console.error('Error fetching data', err);
+    return ([]);
+  }
+}
+
+export async function getPostsFriends(user) {
+  let url = `${postBaseUrl}/friends/${user.userName}`
   console.log(url);
   try {
     const res = await axios.get(url);
@@ -77,5 +90,31 @@ export async function updateSchedule({ post, schedule }) {
   } catch (err) {
     console.error('Error fetching data from published', err);
     return ([]);
+  }
+}
+
+export async function likePost({item, user}) {
+  try {
+    const id = item._id;
+    const userId = user.username;
+    let url = `${postBaseUrl}/${id}/like`;
+    const res = await axios.patch(url, {userId});
+    const post = await res.data;
+    return post;
+  } catch (err) {
+    console.error('Error updating like', err);
+  }
+}
+
+export async function markPost({item, user}) {
+  try {
+    const id = item._id;
+    const userId = user.username;
+    let url = `${postBaseUrl}/${id}/bookmark`;
+    const res = await axios.patch(url, {userId});
+    const post = await res.data;
+    return post;
+  } catch (err) {
+    console.error('Error updating bookmark', err);
   }
 }

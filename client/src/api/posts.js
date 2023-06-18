@@ -65,3 +65,17 @@ export async function getPostsExplore() {
     return ([]);
   }
 }
+
+export async function updateSchedule({ post, schedule }) {
+  try {
+    let url = `${postBaseUrl}/update/schedule/${post._id}`;
+    console.log({ url });
+    console.log({schedule});
+    const res = await axios.patch(url, { schedule: schedule });
+    const posts = await res.data;
+    return posts;
+  } catch (err) {
+    console.error('Error fetching data from published', err);
+    return ([]);
+  }
+}

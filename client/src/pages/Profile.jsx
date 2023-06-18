@@ -3,67 +3,94 @@ import { BsBookmarkFill } from "react-icons/bs";
 
 import { Bookmarks, Published, PastEvents } from "../component/ProfilePosts";
 import { getPostsBookmarks, getPostsPublished, getPostsPast } from "../api/posts";
+import { getUser, createUser } from "../api/users";
 
 import './Profile.css'
 
-export default function Profile () {
+export default function Profile ({ user, signOut }) {
   const [empty, setEmpty] = useState(false);
   const [activeButton, setActiveButton] = useState("pastEvents");
   const [pastposts, setPastPosts] = useState([]);
   const [publishedposts, setPublishedPosts] = useState([]);
   const [bookmarkposts, setBookmarkPosts] = useState([]);
+  const [componentToRender, setComponentToRender] = useState(<PastEvents posts={pastposts}/>);
 
   const handleButtonClick = (buttonId) => {
     setActiveButton(buttonId);
-    if (buttonId === 'pastEvents') {
-      setEmpty(pastposts.length > 0 ? false : true);
-    } else if (buttonId === 'bookmarks') {
-      setEmpty(bookmarkposts.length > 0 ? false : true);
-    } else if (buttonId === 'published') {
-      setEmpty(publishedposts.length > 0 ? false : true);
-    }
   };
 
-  const getPastPosts = async () => {
-    const fetched = await getPostsPast();
-    setPastPosts(fetched);
+  const setDefault = () => {
+    if (activeButton === 'pastEvents') {
+      setEmpty(pastposts.length > 0 ? false : true);
+    } else if (activeButton === 'bookmarks') {
+      setEmpty(bookmarkposts.length > 0 ? false : true);
+    } else if (activeButton === 'published') {
+      setEmpty(publishedposts.length > 0 ? false : true);
+    }
   }
 
-  const getPublishedPosts = async () => {
-    const fetched = await getPostsPublished();
-    setPublishedPosts(fetched);
-  }
-
-  const getBookmarkPosts = async () => {
-    const fetched = await getPostsBookmarks();
-    setBookmarkPosts(fetched);
+  const getProfilePosts = async () => {
+    const fetchedUser = await getUser(user);
+    if (fetchedUser.length === 0) {
+      console.log("not created yet");
+      const createdUser = await createUser(user);
+      const fetchedPast = await getPostsPast(createdUser[0].userName);
+      setPastPosts(fetchedPast);
+      const fetchedBookmark = await getPostsPublished(createdUser[0].userName);
+      setBookmarkPosts(fetchedBookmark);
+      const fetchedPublished = await getPostsBookmarks(createdUser[0].userName);
+      setPublishedPosts(fetchedPublished);
+      console.log(`finsih loading posts`);
+      setDefault();
+    }
+    else{
+      console.log(fetchedUser[0]);
+      const fetchedPast = await getPostsPast(fetchedUser[0].userName);
+      setPastPosts(fetchedPast);
+      console.log(`pastpost: ${fetchedPast}`);
+      const fetchedBookmark = await getPostsBookmarks(fetchedUser[0].userName);
+      setBookmarkPosts(fetchedBookmark);
+      console.log(`bookmark: ${fetchedBookmark}`);
+      const fetchedPublished = await getPostsPublished(fetchedUser[0].userName);
+      setPublishedPosts(fetchedPublished);
+      console.log(`published: ${fetchedPublished}`);
+      console.log(`finsih loading all posts`);
+      setDefault();
+    }
   }
 
   useEffect(() => {
-    getPastPosts();
-    getBookmarkPosts();
-    getPublishedPosts();
+    getProfilePosts();
   }, []);
 
+  useEffect(() => {
+    setDefault();
+    if (activeButton === 'pastEvents') {
+      setComponentToRender(<PastEvents posts={pastposts}/>);
+      // componentToRender = <PastEvents posts={pastposts}/>;
+    } else if (activeButton === 'bookmarks') {
+      setComponentToRender(<Bookmarks posts={bookmarkposts} />);
+      // componentToRender = <Bookmarks posts={bookmarkposts} />;
+    } else if (activeButton === 'published') {
+      setComponentToRender(<Published posts={publishedposts}/>);
+    }
+  }, [activeButton]);
 
-  let componentToRender;
-  if (activeButton === 'pastEvents') {
-    componentToRender = <PastEvents posts={pastposts}/>;
-  } else if (activeButton === 'bookmarks') {
-    componentToRender = <Bookmarks posts={bookmarkposts} />;
-  } else if (activeButton === 'published') {
-    componentToRender = <Published posts={publishedposts}/>;
-  }
+  // let componentToRender;
+  
 
   return (
     <div className="profile ">
-      <div className="person w-full h-48 border-b-2 flex items-center justify-center">
-        <div className='overflow-hidden h-20 w-20 text-white border border-gray-500 rounded-full'>
-            <img src="images/default.png" alt="" />
+      <div className="border-b-2">
+        <div className="person w-full h-48  flex items-center justify-center">
+          <div className='overflow-hidden h-20 w-20 text-white border border-gray-500 rounded-full'>
+              <img src="images/default.png" alt="" />
+          </div>
+          <div className="ml-5">
+            <p className="text-xl font-semibold">{user.username}</p>
+          </div>
         </div>
-        <div className="ml-5">
-          <p className="text-xl font-semibold">Adesanya</p>
-        </div>
+        <div className="flex justify-end"><button onClick={signOut}>Sign Out</button></div>
       </div>
       <div className="posts w-full flex justify-center mt-[-2px] mb-4">
         <button className="w-40 h-12 flex justify-center"

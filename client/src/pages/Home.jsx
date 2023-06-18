@@ -10,11 +10,15 @@ import NewTripModal from '../component/Modals/NewTripModal.jsx';
 import Calendar from '../component/Calendar.jsx';
 import {MainPost, OtherPosts} from '../component/HomePosts';
 import { getPostsHome } from '../api/posts';
+import { getUser, createUser } from "../api/users";
+import { getFriendList } from '../api/users';
 
-
-export default function Home() {
+export default function Home({ user }) {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
+  const [User, setUser] = useState({});
+  const [friends, setFriends] = useState([]);
+
   const [selectedRange, setSelectedRange] = useState([
     {
       startDate: new Date(2023, 6, 3),
@@ -26,28 +30,51 @@ export default function Home() {
     },
   ]);
 
+  const getUserPosts = async () => {
+    const fetchedUser = await getUser(user);
+    if (fetchedUser.length === 0) {
+      console.log("not created yet");
+      const createdUser = await createUser(user);
+      const fetchedPosts = await getPostsHome(createdUser[0].userName);
+      setPosts(fetchedPosts);
+      const fetched = await getFriendList(createdUser[0]);
+      setFriends(fetched);
+    }
+    else{
+      console.log(fetchedUser[0]);
+      const fetchedPosts = await getPostsHome(fetchedUser[0].userName);
+      setPosts(fetchedPosts);
+      const fetched = await getFriendList(fetchedUser[0]);
+      setFriends(fetched);
+    }
+  }
 
   const newTripModal = useNewTripModal();
   const onNewTrip = useCallback(() => {
     newTripModal.onOpen();
   }, [NewTripModal])
 
-  useEffect(() => {
-    const getPosts = async () => {
-      const fetched = await getPostsHome();
-      setPosts(fetched);
-      console.log(`its ${fetched[0].creatorId}`);
-    }
 
-    getPosts();
+  useEffect(() => {
+    getUserPosts();
   }, []);
 
+  
+
+  // useEffect(() => {
+  //   const getPosts = async () => {
+  //     const fetched = await getPostsHome();
+  //     setPosts(fetched);
+  //   }
+  //   getPosts();
+  // }, []);
+  
   return (
     <>
-      <NewTripModal isOpen />
+      <NewTripModal user={user} friends={friends} isOpen />
       <div className="body flex w-full">
         <div className="left overflow-y-auto">
-          <div className="container w-3/5 min-h-full px-4 pt-8 pb-0 m-auto">
+          <div className="container w-3/5 min-h-full pt-8 pb-0 m-auto">
             <h1 className="text-left text-4xl font-bold pl-2 mb-5">Upcoming Trips</h1>
             {posts.length > 0 && <MainPost posts={posts}/>}
             <div>
@@ -68,50 +95,5 @@ export default function Home() {
       </div>
     </>
 
-  )
-}
-
-
-const Posts = () => {
-  return (
-    <div>
-    <div className='min-h-full w-full flex justify-between mb-5'>
-      <div className='post rounded-2xl'>
-        <img src="images/travel.jpg" className='rounded-xl h-3/4 w-full object-cover' />
-        <div className='w-full h-1/4'>
-          <p className=' text-xl text-left'>Trip to Japan</p>
-          <div className='flex items-center justify-between'>
-            <p className=' text-gray-600'>5/3 - 5/4</p>
-            <div className='w-6 h-6 mr-3'><img src="images/default.png" className='round-image ' /></div>
-          </div>
-        </div>
-      </div>
-      <div className='post rounded-2xl'>
-        <img src="images/gray.png" className='rounded-xl h-3/4 w-full object-cover' />
-        <div className='w-full h-1/4'>
-          <p className=' text-xl text-left'>Trip to Japan</p>
-          <div className='flex items-center justify-between'>
-            <p className=' text-gray-600'>5/3 - 5/4</p>
-            <div className='w-6 h-6 mr-3'><img src="images/default.png" className='round-image ' /></div>
-          </div>
-        </div>
-      </div>
-      <div className='post rounded-2xl'>
-        <img src="images/gray.png" className='rounded-xl h-3/4 w-full object-cover' />
-        <div className='w-full h-1/4'>
-          <p className=' text-xl text-left'>Trip to Japan</p>
-          <div className='flex items-center justify-between'>
-            <p className=' text-gray-600'>5/3 - 5/4</p>
-            <div className='w-6 h-6 mr-3'><img src="images/default.png" className='round-image ' /></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div className='min-h-full w-full flex justify-between mb-5'>
-      <div className='post bg-white rounded-2xl'></div>
-      <div className='post bg-white rounded-2xl'></div>
-      <div className='post bg-white rounded-2xl'></div>
-    </div>
-    </div>
   )
 }

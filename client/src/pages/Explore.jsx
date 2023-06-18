@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import "./Explore.css"
-import {ExplorePosts} from '../component/ExplorePost';
-import { getPostsHome } from '../api/posts';
+import {ExplorePosts} from '../component/ExplorePosts';
+import { getPostsExplore } from '../api/posts';
 import { BsBookmark, BsBookmarkFill, BsHeart, BsHeartFill } from "react-icons/bs";
 
 export default function Explore() {
@@ -10,7 +10,7 @@ export default function Explore() {
 
   useEffect(() => {
       const getPosts = async () => {
-        const fetched = await getPostsHome();
+        const fetched = await getPostsExplore();
         setPosts(fetched);
       }
     

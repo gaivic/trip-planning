@@ -11,6 +11,8 @@ import DatePicker from '../inputs/DatePicker';
 import { DateRange } from 'react-date-range';
 import { useNavigate } from "react-router-dom";
 import moment from 'moment';
+import { getUser, createUser } from '../../api/users';
+
 
 
 
@@ -28,15 +30,33 @@ const STEPS = {
 };
 
 
-const NewTripModal = () => {
+const NewTripModal = ({user, friends}) => {
     // using the hooks
     const newTripModal = useNewTripModal();
 
     // state
     const [step, setStep] = useState(STEPS.LOCATION);
+    const [User, setUser] = useState({});
     const [randomPhotoNum, setRandomPhotoNum] = useState(Math.floor(Math.random() * 10));
+    // specfic for into edit page
+    const [postInfo, setPostInfo] = useState({});
     const navigate = useNavigate();
 
+    const getUserschema = async () => {
+        const fetchedUser = await getUser(user);
+        if (fetchedUser === null) {
+          console.log("not created yet");
+          const createdUser = await createUser(user);
+          setUser(createdUser);
+        }
+        else{
+          setUser(fetchedUser);
+          console.log(User);
+        }
+    }
+    useEffect(() => {
+        getUserschema();
+    }, []);
 
     const closeAndReset = () => {
         reset();
@@ -56,6 +76,7 @@ const NewTripModal = () => {
         }
     }
     const onNext = () => {
+
         // if (step === STEPS.CREATE) {
         //     // submit !!!
         //     submitTrip(watch());
@@ -64,9 +85,9 @@ const NewTripModal = () => {
         if (step === STEPS.INFO) {
             // now just close it
             // TODO: go into planning trip page
-            closeAndReset();
-        }
-        else {
+            console.log(postInfo);
+            navigate('/edit', { state: { post: postInfo } });
+        } else {
             setStep((value) => value + 1);
         }
     }
@@ -161,18 +182,18 @@ const NewTripModal = () => {
         
 
         const postData = {
-            creatorId: "12345",
+            creatorId: user.username,
             postTitle: title,
             picturePath: imageSrc,
             location: location.label,
             days: calculateDays(),
-            schedule: [],
-            likes: 0,
+            schedule: emptyScheduleArray(),
             Members: [],
             dates: [startDateString(), endDateString()],
         };
 
         console.log([postData]);
+        setPostInfo(postData);
         axios.post('http://localhost:3030/posts', postData)
             .then((response) => {
                 if (response.status === 201) {
@@ -225,7 +246,7 @@ const NewTripModal = () => {
 
 
     // fake friends
-    const friends = [{ name: 'Jennie' }, { name: 'Aaron' }, { name: 'Smith' }, { name: 'Porter' }, { name: 'Michael' }, { name: 'Samantha' },]
+    // const friends = [{ name: 'Jennie' }, { name: 'Aaron' }, { name: 'Smith' }, { name: 'Porter' }, { name: 'Michael' }, { name: 'Samantha' },]
 
     // for date picker
     // Add these lines at the top of your component
@@ -246,6 +267,10 @@ const NewTripModal = () => {
 
         return days;
     };
+
+    const emptyScheduleArray = () => {
+        return Array.from({ length: calculateDays() }, () => []);
+    }
 
     const startDateString = () => {
         return (
@@ -328,11 +353,11 @@ const NewTripModal = () => {
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto'>
                     {friends.map((item) => {
                         return (
-                            <div key={item.name} className='col-span-1'>
+                            <div key={item.userName} className='col-span-1'>
                                 <FriendBox
                                     onClick={() => { }}
                                     selected={false}
-                                    label={item.name} />
+                                    label={item.userName} />
                             </div>
                         )
                     })}

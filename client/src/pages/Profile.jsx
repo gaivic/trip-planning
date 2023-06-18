@@ -8,46 +8,16 @@ import { getUser, createUser } from "../api/users";
 import './Profile.css'
 
 export default function Profile ({ user, signOut }) {
-  const [User, setUser] = useState({})
   const [empty, setEmpty] = useState(false);
   const [activeButton, setActiveButton] = useState("pastEvents");
   const [pastposts, setPastPosts] = useState([]);
   const [publishedposts, setPublishedPosts] = useState([]);
   const [bookmarkposts, setBookmarkPosts] = useState([]);
+  const [componentToRender, setComponentToRender] = useState(<PastEvents posts={pastposts}/>);
 
   const handleButtonClick = (buttonId) => {
     setActiveButton(buttonId);
-    setDefault();
   };
-
-  const getPastPosts = async () => {
-    const fetched = await getPostsPast(User._id);
-    setPastPosts(fetched);
-  }
-
-  const getPublishedPosts = async () => {
-    const fetched = await getPostsPublished(User._id);
-    setPublishedPosts(fetched);
-  }
-
-  const getBookmarkPosts = async () => {
-    const fetched = await getPostsBookmarks(User._id);
-    console.log(`fetched book marked post: ${fetched}`);
-    setBookmarkPosts(fetched);
-  }
-
-  const getUserschema = async () => {
-    const fetched = await getUser(user);
-    if (fetched === null) {
-      console.log("not created yet");
-      const created = await createUser(user);
-      setUser(created);
-    }
-    else{
-      console.log(`fetched user schema: ${fetched}`);
-      setUser(fetched);
-    }
-  }
 
   const setDefault = () => {
     if (activeButton === 'pastEvents') {
@@ -59,34 +29,55 @@ export default function Profile ({ user, signOut }) {
     }
   }
 
-
+  const getProfilePosts = async () => {
+    const fetchedUser = await getUser(user);
+    if (fetchedUser.length === 0) {
+      console.log("not created yet");
+      const createdUser = await createUser(user);
+      const fetchedPast = await getPostsPast(createdUser[0].userName);
+      setPastPosts(fetchedPast);
+      const fetchedBookmark = await getPostsPublished(createdUser[0].userName);
+      setBookmarkPosts(fetchedBookmark);
+      const fetchedPublished = await getPostsBookmarks(createdUser[0].userName);
+      setPublishedPosts(fetchedPublished);
+      console.log(`finsih loading posts`);
+      setDefault();
+    }
+    else{
+      console.log(fetchedUser[0]);
+      const fetchedPast = await getPostsPast(fetchedUser[0].userName);
+      setPastPosts(fetchedPast);
+      console.log(`pastpost: ${fetchedPast}`);
+      const fetchedBookmark = await getPostsBookmarks(fetchedUser[0].userName);
+      setBookmarkPosts(fetchedBookmark);
+      console.log(`bookmark: ${fetchedBookmark}`);
+      const fetchedPublished = await getPostsPublished(fetchedUser[0].userName);
+      setPublishedPosts(fetchedPublished);
+      console.log(`published: ${fetchedPublished}`);
+      console.log(`finsih loading all posts`);
+      setDefault();
+    }
+  }
 
   useEffect(() => {
-    setDefault();
-    getUserschema();
+    getProfilePosts();
   }, []);
 
-
-  useEffect(() => {
-    console.log(User);
-    getPastPosts();
-    getBookmarkPosts();
-    getPublishedPosts();
-  }, [User]);
-  
   useEffect(() => {
     setDefault();
-  }, [pastposts, bookmarkposts, publishedposts]);
-  
+    if (activeButton === 'pastEvents') {
+      setComponentToRender(<PastEvents posts={pastposts}/>);
+      // componentToRender = <PastEvents posts={pastposts}/>;
+    } else if (activeButton === 'bookmarks') {
+      setComponentToRender(<Bookmarks posts={bookmarkposts} />);
+      // componentToRender = <Bookmarks posts={bookmarkposts} />;
+    } else if (activeButton === 'published') {
+      setComponentToRender(<Published posts={publishedposts}/>);
+    }
+  }, [activeButton]);
 
-  let componentToRender;
-  if (activeButton === 'pastEvents') {
-    componentToRender = <PastEvents posts={pastposts}/>;
-  } else if (activeButton === 'bookmarks') {
-    componentToRender = <Bookmarks posts={bookmarkposts} />;
-  } else if (activeButton === 'published') {
-    componentToRender = <Published posts={publishedposts}/>;
-  }
+  // let componentToRender;
+  
 
   return (
     <div className="profile ">

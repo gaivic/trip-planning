@@ -5,10 +5,10 @@ import User from "../models/User.js";
 export const createUser = async (req, res) => {
   console.log(`in createUser ${req.body.userKey}`);
   try {
-    const { userName, userKey } = req.body;
+    // const { userName, userKey } = req.body;
     const newUser = new User({
-      userName,
-      userKey,
+      userName: req.body.userName,
+      userKey: req.body.userKey
     });
     await newUser.save();
     console.log("saved");
@@ -24,7 +24,6 @@ export const getUser = async (req, res) => {
     const { name } = req.params;
     const user = await User.find({userName: name});
     if (user) {
-      console.log(user);
       res.status(200).json(user);
     }
     else {
@@ -36,21 +35,48 @@ export const getUser = async (req, res) => {
 };
 
 
-export const getUserFriends = async (req, res) => {
+export const getFriends = async (req, res) => {
+  console.log("in get friends server")
   try {
     const { id } = req.params;
     const user = await User.findById(id);
 
-    const friends = await Promise.all(
-      user.friends.map((id) => User.findById(id))
-    );
-    const formattedFriends = friends.map(
-      ({ _id, firstName, lastName, occupation, location, picturePath }) => {
-        return { _id, firstName, lastName, occupation, location, picturePath };
-      }
-    );
-    res.status(200).json(formattedFriends);
+    const friends = await User.find({_id: { $in: user.friends } });
+    console.log(friends);
+    res.status(200).json(friends);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
 };
+
+export const getOtherUsers = async (req, res) => {
+  console.log("in get others server")
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    const others = await User.find({$and: [{_id: { $nin: user.friends } }, { _id: { $ne: user._id }}]});
+    console.log(others);
+    res.status(200).json(others);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
+
+/* UPDATE */
+export const addFriend = async (req, res) => {
+  try {
+    console.log("in add friend srbve");
+    const { id, friendId } = req.params;
+    console.log({id, friendId});
+    const users = await User.find({userName: id});
+    const user = users[0];
+    user.friends.push(friendId);
+    console.log("pushded");
+    await user.save();
+    
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+}

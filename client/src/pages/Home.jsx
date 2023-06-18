@@ -11,12 +11,14 @@ import Calendar from '../component/Calendar.jsx';
 import {MainPost, OtherPosts} from '../component/HomePosts';
 import { getPostsHome } from '../api/posts';
 import { getUser, createUser } from "../api/users";
-
+import { getFriendList } from '../api/users';
 
 export default function Home({ user }) {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [User, setUser] = useState({});
+  const [friends, setFriends] = useState([]);
+
   const [selectedRange, setSelectedRange] = useState([
     {
       startDate: new Date(2023, 6, 3),
@@ -33,14 +35,17 @@ export default function Home({ user }) {
     if (fetchedUser.length === 0) {
       console.log("not created yet");
       const createdUser = await createUser(user);
-      console.log(createdUser[0].userName);
       const fetchedPosts = await getPostsHome(createdUser[0].userName);
       setPosts(fetchedPosts);
+      const fetched = await getFriendList(createdUser[0]);
+      setFriends(fetched);
     }
     else{
       console.log(fetchedUser[0]);
       const fetchedPosts = await getPostsHome(fetchedUser[0].userName);
       setPosts(fetchedPosts);
+      const fetched = await getFriendList(fetchedUser[0]);
+      setFriends(fetched);
     }
   }
 
@@ -48,6 +53,7 @@ export default function Home({ user }) {
   const onNewTrip = useCallback(() => {
     newTripModal.onOpen();
   }, [NewTripModal])
+
 
   useEffect(() => {
     getUserPosts();
@@ -65,7 +71,7 @@ export default function Home({ user }) {
   
   return (
     <>
-      <NewTripModal user={user} isOpen />
+      <NewTripModal user={user} friends={friends} isOpen />
       <div className="body flex w-full">
         <div className="left overflow-y-auto">
           <div className="container w-3/5 min-h-full pt-8 pb-0 m-auto">

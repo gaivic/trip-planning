@@ -79,3 +79,6 @@ const TripPlan = ({ active, onDayClick, post ,schedule}) => {
 }
 
 export default TripPlan;
+
+
+

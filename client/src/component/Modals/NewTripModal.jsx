@@ -30,7 +30,7 @@ const STEPS = {
 };
 
 
-const NewTripModal = ({user}) => {
+const NewTripModal = ({user, friends}) => {
     // using the hooks
     const newTripModal = useNewTripModal();
 
@@ -246,7 +246,7 @@ const NewTripModal = ({user}) => {
 
 
     // fake friends
-    const friends = [{ name: 'Jennie' }, { name: 'Aaron' }, { name: 'Smith' }, { name: 'Porter' }, { name: 'Michael' }, { name: 'Samantha' },]
+    // const friends = [{ name: 'Jennie' }, { name: 'Aaron' }, { name: 'Smith' }, { name: 'Porter' }, { name: 'Michael' }, { name: 'Samantha' },]
 
     // for date picker
     // Add these lines at the top of your component
@@ -353,11 +353,11 @@ const NewTripModal = ({user}) => {
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto'>
                     {friends.map((item) => {
                         return (
-                            <div key={item.name} className='col-span-1'>
+                            <div key={item.userName} className='col-span-1'>
                                 <FriendBox
                                     onClick={() => { }}
                                     selected={false}
-                                    label={item.name} />
+                                    label={item.userName} />
                             </div>
                         )
                     })}

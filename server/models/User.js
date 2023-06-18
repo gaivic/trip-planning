@@ -8,11 +8,10 @@ const UserSchema = new mongoose.Schema(
     },
     userKey: {
       type: String,
-      required: true,
     },
     picturePath: {
       type: String,
-      default: "",
+      default: "a",
     },
     friends: {
       type: [String],

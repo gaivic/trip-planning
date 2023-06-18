@@ -5,10 +5,10 @@ import User from "../models/User.js";
 export const createUser = async (req, res) => {
   console.log(`in createUser ${req.body.userKey}`);
   try {
-    const { userName, userKey } = req.body;
+    // const { userName, userKey } = req.body;
     const newUser = new User({
-      userName,
-      userKey,
+      userName: req.body.userName,
+      userKey: req.body.userKey
     });
     await newUser.save();
     console.log("saved");

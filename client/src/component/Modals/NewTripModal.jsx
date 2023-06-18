@@ -16,6 +16,7 @@ import { getUser, createUser } from '../../api/users';
 
 
 
+
 const SimpleMap = lazy(() => import('../SimpleMap'));
 
 // for each step in popout
@@ -37,6 +38,8 @@ const NewTripModal = ({user}) => {
     const [step, setStep] = useState(STEPS.LOCATION);
     const [User, setUser] = useState({});
     const [randomPhotoNum, setRandomPhotoNum] = useState(Math.floor(Math.random() * 10));
+    // specfic for into edit page
+    const [postInfo, setPostInfo] = useState({});
     const navigate = useNavigate();
 
     const getUserschema = async () => {
@@ -73,6 +76,7 @@ const NewTripModal = ({user}) => {
         }
     }
     const onNext = () => {
+
         // if (step === STEPS.CREATE) {
         //     // submit !!!
         //     submitTrip(watch());
@@ -81,9 +85,9 @@ const NewTripModal = ({user}) => {
         if (step === STEPS.INFO) {
             // now just close it
             // TODO: go into planning trip page
-            closeAndReset();
-        }
-        else {
+            console.log(postInfo);
+            navigate('/edit', { state: { post: postInfo } });
+        } else {
             setStep((value) => value + 1);
         }
     }
@@ -183,36 +187,13 @@ const NewTripModal = ({user}) => {
             picturePath: imageSrc,
             location: location.label,
             days: calculateDays(),
-            schedule: [
-                [
-                    "ChIJUZ-WfXKpQjQR0j4ggToD89A", 
-                    "ChIJxccAAQ2pQjQRgGoVa3_yuI4"
-                ],
-                [
-                    "ChIJWfZUVq6pQjQR3Z-1OU8ILgo" ,
-                    "ChIJnzZlOoCpQjQRH-WG9egh-2E" ,
-                    "ChIJDRFd54KrQjQRMVgkMiJTbMM" 
-                ],
-                [
-                    "ChIJP7Zo9S6nQjQRK2KoXGG9_w8" ,
-                    "ChIJZdTFIrmfQjQRJ1tSbSwM_Go" 
-                ],
-                [
-                    "ChIJWfZUVq6pQjQR3Z-1OU8ILgo" ,
-                    "ChIJnzZlOoCpQjQRH-WG9egh-2E" ,
-                    "ChIJDRFd54KrQjQRMVgkMiJTbMM" 
-                ],
-                [
-                    "ChIJWfZUVq6pQjQR3Z-1OU8ILgo" ,
-                    "ChIJZdTFIrmfQjQRJ1tSbSwM_Go" ,
-                    "ChIJUZ-WfXKpQjQR0j4ggToD89A" 
-                ]
-            ],
+            schedule: emptyScheduleArray(),
             Members: [],
             dates: [startDateString(), endDateString()],
         };
 
         console.log([postData]);
+        setPostInfo(postData);
         axios.post('http://localhost:3030/posts', postData)
             .then((response) => {
                 if (response.status === 201) {
@@ -286,6 +267,10 @@ const NewTripModal = ({user}) => {
 
         return days;
     };
+
+    const emptyScheduleArray = () => {
+        return Array.from({ length: calculateDays() }, () => []);
+    }
 
     const startDateString = () => {
         return (

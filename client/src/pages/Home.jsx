@@ -30,9 +30,11 @@ export default function Home({ user }) {
 
   const getUserPosts = async () => {
     const fetchedUser = await getUser(user);
-    if (fetchedUser === null) {
+    console.log(fetchedUser);
+    if (fetchedUser.length === 0) {
       console.log("not created yet");
       const createdUser = await createUser(user);
+      console.log(createdUser[0].userName);
       const fetchedPosts = await getPostsHome(createdUser[0].userName);
       setPosts(fetchedPosts);
     }

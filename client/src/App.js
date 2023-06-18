@@ -16,10 +16,11 @@ import { useEffect } from 'react';
 
 import { Authenticator } from "@aws-amplify/ui-react";
 import '@aws-amplify/ui-react/styles.css';
+import EditPage from './pages/EditPage';
 
 function App() {
   const location = useLocation();
-  const hideNavbarRoutes = ['/check'];
+  const hideNavbarRoutes = ['/check', '/edit'];
 
   const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
 
@@ -37,6 +38,7 @@ function App() {
             <Route path="/friends" element={<Friends user={user}/>} />
             <Route path="/profile" element={<Profile user={user} signOut={signOut}/>} />
             <Route path="/check" element={<CheckPage user={user}/>} />
+            <Route path="/edit" element={<EditPage user={user} />} />
             {/* <Route path="/start-plan" element={<StartPlan />} /> */}
           </Routes>
         </div>

@@ -10,11 +10,13 @@ import NewTripModal from '../component/Modals/NewTripModal.jsx';
 import Calendar from '../component/Calendar.jsx';
 import {MainPost, OtherPosts} from '../component/HomePosts';
 import { getPostsHome } from '../api/posts';
+import { getUser, createUser } from "../api/users";
 
 
-export default function Home() {
+export default function Home({ user }) {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
+  const [User, setUser] = useState({});
   const [selectedRange, setSelectedRange] = useState([
     {
       startDate: new Date(2023, 6, 3),
@@ -26,6 +28,22 @@ export default function Home() {
     },
   ]);
 
+  const getUserPosts = async () => {
+    const fetchedUser = await getUser(user);
+    console.log(fetchedUser);
+    if (fetchedUser.length === 0) {
+      console.log("not created yet");
+      const createdUser = await createUser(user);
+      console.log(createdUser[0].userName);
+      const fetchedPosts = await getPostsHome(createdUser[0].userName);
+      setPosts(fetchedPosts);
+    }
+    else{
+      console.log(fetchedUser[0]);
+      const fetchedPosts = await getPostsHome(fetchedUser[0].userName);
+      setPosts(fetchedPosts);
+    }
+  }
 
   const newTripModal = useNewTripModal();
   const onNewTrip = useCallback(() => {
@@ -33,17 +51,22 @@ export default function Home() {
   }, [NewTripModal])
 
   useEffect(() => {
-    const getPosts = async () => {
-      const fetched = await getPostsHome();
-      setPosts(fetched);
-    }
-
-    getPosts();
+    getUserPosts();
   }, []);
 
+  
+
+  // useEffect(() => {
+  //   const getPosts = async () => {
+  //     const fetched = await getPostsHome();
+  //     setPosts(fetched);
+  //   }
+  //   getPosts();
+  // }, []);
+  
   return (
     <>
-      <NewTripModal isOpen />
+      <NewTripModal user={user} isOpen />
       <div className="body flex w-full">
         <div className="left overflow-y-auto">
           <div className="container w-3/5 min-h-full pt-8 pb-0 m-auto">

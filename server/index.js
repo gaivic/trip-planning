@@ -5,13 +5,14 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import postRoutes from "./routes/posts.js";
+import userRoutes from "./routes/users.js";
 import Post from "./models/Post.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // const MONGO_URL = "mongodb://localhost/testdb";
-// const MONGO_URL = "mongodb+srv://NewTrip:newtrip@cluster0.vruc1uw.mongodb.net/deployed?retryWrites=true&w=majority";
+//const MONGO_URL = "mongodb+srv://NewTrip:newtrip@cluster0.vruc1uw.mongodb.net/?retryWrites=true&w=majority";
 const MONGO_URL = "mongodb+srv://gai910802:gai910802910802@cluster0.b6uplyp.mongodb.net/?retryWrites=true&w=majority";
 
 const app = express();
@@ -23,7 +24,7 @@ app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
 
 /* ROUTES */
 // app.use("/auth", authRoutes);
-// app.use("/users", userRoutes);
+app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
 
 /* MONGOOSE SETUP */

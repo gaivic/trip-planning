@@ -5,20 +5,13 @@ const UserSchema = new mongoose.Schema(
     userName: {
       type: String,
       required: true,
-      min: 2,
-      max: 50,
     },
-    password: {
+    userKey: {
       type: String,
-      required: true,
-      min: 2,
-      max: 50,
     },
     picturePath: {
       type: String,
-      required: true,
-      max: 50,
-      unique: true,
+      default: "a",
     },
     friends: {
       type: [String],

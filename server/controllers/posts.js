@@ -38,10 +38,12 @@ export const getPostsHome = async (req, res) => {
   console.log("in getpostshome");
   try {
     const { id } = req.params;
-    console.log(id);
+    const user = await User.find({userName: id});
     const today = new Date();
     const formatted = moment(today).format("YYYY/MM/DD");
-    const posts = await Post.find({ creatorId: id, "dates.1": { $gte: formatted } }).sort({ 'dates.0': 1 });
+    const posts = await Post.find({$or: [ { members: user[0]._id, "dates.1": { $gte: formatted } }, 
+                        { creatorId: id, "dates.1": { $gte: formatted } } ]})
+                        .sort({ 'dates.0': 1 });
 
     res.status(200).json(posts);
   } catch (err) {

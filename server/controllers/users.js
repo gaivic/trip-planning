@@ -60,6 +60,17 @@ export const getOtherUsers = async (req, res) => {
   }
 };
 
+export const getUserRequests = async (req, res) => {
+  console.log("fetching User request from server");
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    // const requests = user.requests;
+    res.status(200).json([]);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+}
 
 /* UPDATE */
 export const addFriend = async (req, res) => {

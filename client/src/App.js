@@ -30,7 +30,7 @@ function App() {
     {({ signOut, user }) => {
       return (
       <div className="App">
-        {!shouldHideNavbar && <Header/>}
+        {!shouldHideNavbar && <Header user={user}/>}
         <div className='body'>
           <Routes>
             <Route path="/" element={<Home user={user}/>} />

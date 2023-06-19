@@ -1,7 +1,7 @@
 import React, { useEffect }  from 'react';
 import { useState } from "react";
 import { IoIosPin } from 'react-icons/io';
-import { BsBookmark, BsBookmarkFill, BsHeart, BsHeartFill } from "react-icons/bs";
+import { FaRegHeart, FaHeart, FaRegBookmark, FaBookmark } from "react-icons/fa";
 import { Link, Navigate } from "react-router-dom";
 import { likePost, markPost } from '../api/posts';
 
@@ -45,12 +45,12 @@ export function FriendPosts({post, user}) {
                             <img src="images/default.png" className='round-image mx-1' />
                             <p className='text-gray-600'>{post.creatorId}</p>
                         </div>
-                        <div className='flex'>
+                        <div className='flex items-center'>
                             <button onClick={handleMark}>
-                            {marked ? (<BsBookmarkFill className='m-1'/>) : (<BsBookmark className='m-1' />)}
+                            {marked ? (<FaBookmark className="m-2 text-2xl" />) : (<FaRegBookmark className="m-2 text-2xl" />)}
                             </button>
                             <button onClick={handleLike}>
-                            {liked ? <BsHeartFill className='m-1' /> : <BsHeart className='m-1' />}
+                            {liked ? <FaHeart className="m-2 text-2xl" style={{ color: 'red' }} /> : <FaRegHeart className="m-2 text-2xl" />}
                             </button>
                             <p className='text-gray-600 mr-2'>{numLikes}</p>
                             {/* <BsBookmark className='m-1' />

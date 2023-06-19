@@ -6,6 +6,7 @@ import { Link, Navigate } from "react-router-dom";
 import PostinExplore from './PostinExplore';
 
 
+
 export function ExplorePosts(props) {
   const exploreposts = props.posts;
   const user = props.user;

@@ -22,10 +22,10 @@ function style(color) {
 
 function CheckPage() {
     const location = useLocation();
-    const {post} = location.state; // Accessing the passed state data
+    const { post } = location.state; // Accessing the passed state data
     const [sizes, setSizes] = useState(['43%', '57%']);
     const [active, setActive] = useState(1); // Initialize with a default value
-
+    const [schedule, setSchedule] = useState(post.schedule);
 
     const handleDayClick = (day) => {
         setActive(day);
@@ -42,11 +42,11 @@ function CheckPage() {
                     <SashContent style={{ backgroundColor: "rgba(143,143,143)" }} />
                 )}
             >
-                <Pane minSize='35%' maxSize='54%'>
-                    <TripPlan active={active} onDayClick={handleDayClick} post={post} />
+                <Pane minSize='40%' maxSize='55%'>
+                    <TripPlan active={active} onDayClick={handleDayClick} post={post} schedule={schedule} />
                 </Pane>
                 <Pane>
-                    <Map active={active} schedule={post.schedule} />
+                    <Map active={active} schedule={post.schedule} country={post.location} />
                 </Pane>
             </SplitPane>
         </div>
@@ -54,5 +54,3 @@ function CheckPage() {
 }
 
 export default CheckPage;
-
-

@@ -196,12 +196,14 @@ const NewTripModal = ({ user, friends }) => {
         };
 
         setPostInfo(postData);
-        
+        console.log(members);
+
         axios.post('http://localhost:3030/posts', postData)
             .then((response) => {
                 if (response.status === 201) {
                     console.log('Trip created successfully:', response.data._id);
                     // Handle any further actions after successful creation of the trip
+
                     updateUserReq(members, response.data._id);
                 } else {
                     console.log('Failed to create trip:', response.status);

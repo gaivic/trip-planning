@@ -8,12 +8,15 @@ import { BsBookmark, BsBookmarkFill, BsHeart, BsHeartFill } from "react-icons/bs
 import { IoArrowBack } from "react-icons/io5";
 
 import { getUser, createUser } from "../api/users";
+import { Spinner } from "@material-tailwind/react";
+
 
 export default function Friends({ user }) {
     const [posts, setPosts] = useState([]);
     const [friends, setFriends] = useState([]);
     const [others, setOthers] = useState([]);
     const [tolist, setTolist] = useState("friends");
+    const [isLoading, setIsLoading] = useState(true);
 
     const getPosts = async () => {
         const fetchedUser = await getUser(user);
@@ -26,6 +29,7 @@ export default function Friends({ user }) {
                 const fetched = await getPostsFriends(fetchedUser[0]);
                 setPosts(fetched);
             }
+            setIsLoading(false);
     }
  
     const getOtherUsers = async () => {
@@ -95,9 +99,15 @@ export default function Friends({ user }) {
 
     return (
         <div className="body flex w-full">
-            <div className="fleft overflow-y-auto space-y-10">
-                {renderedPosts}
-            </div>
+            {isLoading ? (
+                <div className="flex justify-center items-center h-64 py-96 fleft">
+                    <Spinner className="h-12 w-12" />
+                </div>
+            ) : (
+                <div className="fleft overflow-y-auto space-y-10">
+                    {renderedPosts}
+                </div>
+            )}
             <div className="fright overflow-y-auto">
                 <div className="rounded-xl mx-auto px-10 py-5">
                     <p className='text-2xl text-left mt-2 mb-6 ml-1 font-semibold'>Friends</p>

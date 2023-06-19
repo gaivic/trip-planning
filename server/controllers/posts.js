@@ -222,6 +222,19 @@ export const updateSchedule = async (req, res) => {
   }
 }
 
+
+export const updatePublished = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { published } = req.body;
+    console.log({ id, published });
+    const updatedPost = await Post.findByIdAndUpdate(
+      id,
+      { published: published },
+    )
+
+    res.status(200).json(updatedPost);
+
 export const updateMembers = async (req, res) => {
   try {
     const { id } = req.params;
@@ -233,6 +246,7 @@ export const updateMembers = async (req, res) => {
     post.members.push(userId);
     post.save();
     res.status(200).json(post);
+
   } catch (err) {
     res.status(404).json({ message: err.message });
   }

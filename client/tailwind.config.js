@@ -8,7 +8,11 @@ module.exports = withMT({
     "./node_modules/react-tailwindcss-datepicker/dist/index.esm.js",
   ],
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        '128': '32rem',
+      }
+    },
     colors: {
       addNewTrip: '#1ce2ee',
       addNewTripHover: '#30effb',

@@ -8,27 +8,21 @@ import { DateRange } from 'react-date-range';
 import useNewTripModal from '../hooks/useNewTripModal.js';
 import NewTripModal from '../component/Modals/NewTripModal.jsx';
 import Calendar from '../component/Calendar.jsx';
-import {MainPost, OtherPosts} from '../component/HomePosts';
+import { MainPost, OtherPosts } from '../component/HomePosts';
 import { getPostsHome } from '../api/posts';
 import { getUser, createUser } from "../api/users";
 import { getFriendList } from '../api/users';
+
+import { Spinner } from "@material-tailwind/react";
+
 
 export default function Home({ user }) {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [User, setUser] = useState({});
   const [friends, setFriends] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [selectedRange, setSelectedRange] = useState([
-    {
-      startDate: new Date(2023, 6, 3),
-      endDate: new Date(2023, 6, 5),
-    },
-    {
-      startDate: new Date(2023, 6, 8),
-      endDate: new Date(2023, 6, 9),
-    },
-  ]);
 
   const getUserPosts = async () => {
     const fetchedUser = await getUser(user);
@@ -40,8 +34,9 @@ export default function Home({ user }) {
       const fetched = await getFriendList(createdUser[0]);
       setFriends(fetched);
       setUser(createdUser[0]);
+
     }
-    else{
+    else {
       console.log(fetchedUser[0]);
       const fetchedPosts = await getPostsHome(fetchedUser[0].userName);
       setPosts(fetchedPosts);
@@ -49,6 +44,7 @@ export default function Home({ user }) {
       setFriends(fetched);
       setUser(fetchedUser[0]);
     }
+    setIsLoading(false);
   }
 
   const newTripModal = useNewTripModal();
@@ -61,7 +57,7 @@ export default function Home({ user }) {
     getUserPosts();
   }, []);
 
-  
+
 
   // useEffect(() => {
   //   const getPosts = async () => {
@@ -70,18 +66,26 @@ export default function Home({ user }) {
   //   }
   //   getPosts();
   // }, []);
-  
+
   return (
     <>
       <NewTripModal user={User} friends={friends} isOpen />
       <div className="body flex w-full">
         <div className="left overflow-y-auto">
           <div className="container w-3/5 min-h-full pt-8 pb-0 m-auto">
-            <h1 className="text-left text-4xl font-bold pl-2 mb-5">Upcoming Trips</h1>
-            {posts.length > 0 && <MainPost posts={posts}/>}
-            <div>
-            {posts.length > 1 && <OtherPosts posts={posts}/>}
-            </div>
+            {isLoading ? (
+              <div className="flex justify-center items-center h-64 py-96">
+                <Spinner className="h-12 w-12" />
+              </div>
+            ) : (
+              <>
+                <h1 className="text-left text-4xl font-bold pl-2 mb-5">Upcoming Trips</h1>
+                {posts.length > 0 && <MainPost posts={posts} />}
+                <div>
+                  {posts.length > 1 && <OtherPosts posts={posts} />}
+                </div>
+              </>
+            )}
           </div>
         </div>
         <div className="right bg-gray-100">
@@ -90,12 +94,12 @@ export default function Home({ user }) {
           <h1 className='text-left text-4xl font-semibold pl-10 mb-3'>Calendar</h1>
           <div>
             <Calendar
-              selectedRange={selectedRange}
+              posts={posts}
             />
-          </div>
-        </div>
+          </div>      </div>
       </div>
     </>
+  );
 
-  )
 }
+

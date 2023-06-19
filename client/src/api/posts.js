@@ -119,6 +119,20 @@ export async function markPost({item, user}) {
   }
 }
 
+
+export async function updatePublished({ post, published }) {
+  try {
+    let url = `${postBaseUrl}/update/published/${post._id}`;
+    const res = await axios.patch(url, { published: published });
+    const posts = await res.data;
+    console.log(posts);
+    return posts;
+  } catch (err) {
+    console.error('Error fetching data from published', err);
+    return ([]);
+  }
+}
+
 export async function setPostMembers(post, User) {
   try {
     const userId = User._id;
@@ -130,4 +144,5 @@ export async function setPostMembers(post, User) {
     console.error('Error updating members', err);
   }
 }
+
 

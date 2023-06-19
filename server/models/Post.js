@@ -30,7 +30,7 @@ const postSchema = mongoose.Schema(
     dates: [String],
     published: {
       type: Boolean,
-      default: true,
+      default: false,
     }
   },
   { timestamps: true }

@@ -38,10 +38,10 @@ export function OtherPosts(props) {
     const chunk = otherposts.slice(i, i + 3);
     const posts = chunk.map((item) => {
       return (
-
+        
         <div className='post rounded-xl'>
           <Link to="/edit" state={{ post: item }}>
-            <img src={item.picturePath} className='rounded-xl h-3/4 w-full object-cover' />
+            <img src={item.picturePath} className="rounded-t-xl rounded-none h-3/4 w-full object-cover"/>
             <div className='w-full h-1/4'>
               <p className=' text-xl text-left ml-1'>{item.postTitle}</p>
               <div className='flex items-center justify-between ml-1'>

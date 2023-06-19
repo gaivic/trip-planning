@@ -30,7 +30,7 @@ const STEPS = {
 };
 
 
-const NewTripModal = ({user, friends}) => {
+const NewTripModal = ({ user, friends }) => {
     // using the hooks
     const newTripModal = useNewTripModal();
 
@@ -45,13 +45,13 @@ const NewTripModal = ({user, friends}) => {
     const getUserschema = async () => {
         const fetchedUser = await getUser(user);
         if (fetchedUser === null) {
-          console.log("not created yet");
-          const createdUser = await createUser(user);
-          setUser(createdUser);
+            console.log("not created yet");
+            const createdUser = await createUser(user);
+            setUser(createdUser);
         }
-        else{
-          setUser(fetchedUser);
-          console.log(User);
+        else {
+            setUser(fetchedUser);
+            console.log(User);
         }
     }
     useEffect(() => {
@@ -60,7 +60,7 @@ const NewTripModal = ({user, friends}) => {
 
     const closeAndReset = () => {
         reset();
-        setState([{startDate: new Date(),endDate: new Date(),key: 'selection'}])
+        setState([{ startDate: new Date(), endDate: new Date(), key: 'selection' }])
         setStep(STEPS.LOCATION);
         newTripModal.onClose();
         navigate(0);
@@ -167,33 +167,36 @@ const NewTripModal = ({user, friends}) => {
             location: null,
             imageSrc: '',
             title: '',
+            members: [],
         }
     });
 
     const location = watch('location');
     const title = watch('title');
     const imageSrc = watch('imageSrc');
+    const members = watch('members');
+
 
     const onSubmit = (data) => {
         if (step !== STEPS.CREATE) {
             return onNext();
         }
 
-        
+
 
         const postData = {
-            creatorId: user.username,
+            creatorId: user.userName,
             postTitle: title,
             picturePath: imageSrc,
             location: location.label,
             days: calculateDays(),
             schedule: emptyScheduleArray(),
-            Members: [],
+            members: members,
             dates: [startDateString(), endDateString()],
         };
 
-        console.log([postData]);
         setPostInfo(postData);
+        
         axios.post('http://localhost:3030/posts', postData)
             .then((response) => {
                 if (response.status === 201) {
@@ -263,7 +266,7 @@ const NewTripModal = ({user, friends}) => {
         const { startDate, endDate } = state[0]; // Extract the startDate and endDate from the state
         const start = new Date(startDate);
         const end = new Date(endDate);
-        const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24))+1; // Calculate the difference in days
+        const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1; // Calculate the difference in days
 
         return days;
     };
@@ -276,18 +279,39 @@ const NewTripModal = ({user, friends}) => {
         return (
             moment(state[0].startDate).format("YYYY/MM/DD")
         )
-    } 
+    }
 
     const endDateString = () => {
         return (
             moment(state[0].endDate).format("YYYY/MM/DD")
         )
     }
-    
+
 
     useEffect(() => {
         console.log(state[0]);
     }, [state])
+
+    // for STEP 4, select or cancel a friends
+    const [friendNames, setFriendNames] = useState([]);
+    const handleMemberChange = (friendId, friendName) => {
+        if (members.includes(friendId)) {
+            // Friend is already selected, remove them from the members array
+            const updatedMembers = members.filter((id) => id !== friendId);
+            const updatedFriendNames = friendNames.filter((name) => name !== friendName);
+            setCustomValue('members', updatedMembers); // Update the form field value
+            setFriendNames(updatedFriendNames); // Update the friendName state
+        } else {
+            // Friend is not selected, add them to the members array
+            const updatedMembers = [...members, friendId];
+            const updatedFriendNames = [...friendNames, friendName];
+            setCustomValue('members', updatedMembers); // Update the form field value
+            setFriendNames(updatedFriendNames); // Update the friendName state
+        }
+        console.log(members);
+        console.log(friendName);
+    };
+
 
     // STEP 1: choose place
     let bodyContenet = (
@@ -355,9 +379,11 @@ const NewTripModal = ({user, friends}) => {
                         return (
                             <div key={item.userName} className='col-span-1'>
                                 <FriendBox
-                                    onClick={() => { }}
-                                    selected={false}
-                                    label={item.userName} />
+                                    key={item._id}
+                                    onClick={() => handleMemberChange(item._id, item.userName)}
+                                    selected={members.includes(item._id)}
+                                    label={item.userName}
+                                />
                             </div>
                         )
                     })}
@@ -407,17 +433,20 @@ const NewTripModal = ({user, friends}) => {
                     <div className="mt-3">
                         <span className="text-gray-700 px-3">Location:</span> {location?.label || ''}
                     </div>
+
                     <div className="mt-3">
-                        <span className="text-gray-700 px-3">Members:</span>
+                        <span className="text-gray-700 px-3">
+                            Members:
+                        </span>
+                        {friendNames.map((item) => (
+                            <span key={item} className="ml-2 text-black">
+                                {item}
+                            </span>
+                        ))}
                     </div>
-                    {/* <div className="pl-4"> */}
-                    {/* Render the selected friends */}
-                    {/* {friends.map((item) => (
-                            <div key={item.name} className="ml-2">
-                                {item.name}
-                            </div>
-                        ))} */}
-                    {/* </div> */}
+
+
+
                     <div className="mt-3">
                         <span className="text-gray-700 px-3">Dates:</span> {startDateString()} - {endDateString()}
                     </div>

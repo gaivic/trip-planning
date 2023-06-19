@@ -191,17 +191,19 @@ const NewTripModal = ({ user, friends }) => {
             location: location.label,
             days: calculateDays(),
             schedule: emptyScheduleArray(),
-            members: members,
+            members: [],
             dates: [startDateString(), endDateString()],
         };
 
         setPostInfo(postData);
-        
+        console.log(members);
+
         axios.post('http://localhost:3030/posts', postData)
             .then((response) => {
                 if (response.status === 201) {
                     console.log('Trip created successfully:', response.data);
                     // Handle any further actions after successful creation of the trip
+                    console.log(members);
                 } else {
                     console.log('Failed to create trip:', response.status);
                     // Handle the error case if the trip creation fails

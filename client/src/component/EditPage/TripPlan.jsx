@@ -26,7 +26,7 @@ const TripPlan = ({ active, onDayClick, post, schedule, deletePlace, dragUpdateS
         variant: active === index ? "filled" : "text",
         color: active === index ? "cyan" : "blue-gray",
         onClick: () => handleDayClick(index),
-        className: "rounded-2xl w-1/4 p-4",
+        className: "rounded-2xl p-4 my-2",
     });
 
 

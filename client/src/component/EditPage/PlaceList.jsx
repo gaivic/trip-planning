@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
+    Chip,
     List,
     ListItem,
     ListItemSuffix,
@@ -69,41 +70,46 @@ export default function PlacesList({ schedule, activeDay, dragUpdateSchedule, de
     return (
         <Card className="w-full shadow-none">
             {placeNames.length > 0 ? (
-                <DragDropContext onDragEnd={handleOnDragEnd}>
-                    <Droppable droppableId="place">
-                        {(provided) => (
-                            <List {...provided.droppableProps} ref={provided.innerRef}>
-                                {placeNames.map((place, index) => (
-                                    <Draggable key={place.id} draggableId={place.id} index={index}>
-                                        {(provided) => (
-                                            <ListItem
-                                                className="py-4 pr-1 pl-4 bg-cyan-50 hover:bg-cyan-200 rounded-md "	                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                ref={provided.innerRef}
-                                                onMouseEnter={() => setHoveredIndex(index)}
-                                                onMouseLeave={() => setHoveredIndex(null)}
-                                            >
-                                                <div className="text-lg">{place.placename}</div>
-                                                {hoveredIndex === index && (
-                                                    <ListItemSuffix>
-                                                        <IconButton
-                                                            color="gray"
-                                                            onClick={() => handleDeletePlace(index)}
-                                                            ripple="dark"
-                                                        >
-                                                            <TrashIcon className="h-5 w-5" />
-                                                        </IconButton>
-                                                    </ListItemSuffix>
-                                                )}
-                                            </ListItem>
-                                        )}
-                                    </Draggable>
-                                ))}
-                                {provided.placeholder}
-                            </List>
-                        )}
-                    </Droppable>
-                </DragDropContext>)
+                <div className="h-128 overflow-y-auto">
+                    <DragDropContext onDragEnd={handleOnDragEnd}>
+                        <Droppable droppableId="place">
+                            {(provided) => (
+                                <List {...provided.droppableProps} ref={provided.innerRef} className='gap-y-4'>
+                                    {placeNames.map((place, index) => (
+                                        <Draggable key={place.id} draggableId={place.id} index={index}>
+                                            {(provided) => (
+                                                <ListItem
+                                                    className="py-4 pr-1 pl-4 bg-cyan-50 hover:bg-cyan-200 rounded-md "	                                                {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    ref={provided.innerRef}
+                                                    onMouseEnter={() => setHoveredIndex(index)}
+                                                    onMouseLeave={() => setHoveredIndex(null)}
+                                                >
+                                                    <div className="text-lg flex items-center gap-4">
+                                                        <Chip size="lg" value={String.fromCharCode(65 + index)} className='rounded-full bg-cyan-400' />
+                                                        <span>{place.placename}</span>
+                                                    </div>
+                                                    {hoveredIndex === index && (
+                                                        <ListItemSuffix>
+                                                            <IconButton
+                                                                color="gray"
+                                                                onClick={() => handleDeletePlace(index)}
+                                                                ripple="dark"
+                                                            >
+                                                                <TrashIcon className="h-5 w-5" />
+                                                            </IconButton>
+                                                        </ListItemSuffix>
+                                                    )}
+                                                </ListItem>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                    {provided.placeholder}
+                                </List>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+                </div>)
                 : (
                     <List>
                         <ListItem className="py-4 pr-1 pl-4">

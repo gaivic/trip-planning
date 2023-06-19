@@ -234,6 +234,11 @@ export const updatePublished = async (req, res) => {
     )
 
     res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+}
+
 
 export const updateMembers = async (req, res) => {
   try {

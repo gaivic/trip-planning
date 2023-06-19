@@ -26,7 +26,7 @@ const TripPlan = ({ active, onDayClick, post, schedule, deletePlace, dragUpdateS
         variant: active === index ? "filled" : "text",
         color: active === index ? "cyan" : "blue-gray",
         onClick: () => handleDayClick(index),
-        className: "rounded-2xl p-4 my-2",
+        className: "rounded-2xl my-2",
     });
 
 
@@ -52,7 +52,7 @@ const TripPlan = ({ active, onDayClick, post, schedule, deletePlace, dragUpdateS
                             goToLastPage();
                         }}>
                         <IoMdArrowRoundBack className='h-4 w-5 m-0' />
-                        Explore
+                        Back
                     </button>
                 </div>
                 <TripInfo post={post} />

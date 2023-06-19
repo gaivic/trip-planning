@@ -13,7 +13,7 @@ const __dirname = path.dirname(__filename);
 
 // const MONGO_URL = "mongodb://localhost/testdb";
 
-const MONGO_URL = "mongodb+srv://NewTrip:newtrip@cluster0.vruc1uw.mongodb.net/test1?retryWrites=true&w=majority";
+const MONGO_URL = "mongodb+srv://NewTrip:newtrip@cluster0.vruc1uw.mongodb.net/deploy?retryWrites=true&w=majority";
 // const MONGO_URL = "mongodb+srv://gai910802:gai910802910802@cluster0.b6uplyp.mongodb.net/victor?retryWrites=true&w=majority";
 
 

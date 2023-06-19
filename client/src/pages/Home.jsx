@@ -92,7 +92,7 @@ export default function Home({ user }) {
           <button className='bg-addNewTrip hover:bg-addNewTripHover py-4 px-3 rounded-full font-semibold shadow-md text-sl leading-6 font-sans my-20' onClick={newTripModal.onOpen}>
             +Add New Trip</button>
           <h1 className='text-left text-4xl font-semibold pl-10 mb-3'>Calendar</h1>
-          <div>
+          <div className='mt-1'>
             <Calendar
               posts={posts}
             />

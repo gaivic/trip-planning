@@ -7,6 +7,7 @@ import Requests from "./Requests";
 
 import './Header.css'
 
+
 const Header = ({ user }) => {
     // const { user } = useContext(UserContext);
     const [ request, setRequest ] = useState([]);
@@ -31,7 +32,9 @@ const Header = ({ user }) => {
     }
 
     useEffect(() => {
-        getUserReq();
+        setTimeout(() => {
+            getUserReq(); 
+        }, 3000);
     }, [openDropdown])
 
 
@@ -43,9 +46,14 @@ const Header = ({ user }) => {
 
     return (
         <div>
-            <header className='flex justify-between px-4 py-3 border-b items-center'>
+            <header className='flex justify-between px-4 py-3  items-center  shadow-sm z-10 border-b-2 border-gray-300'>
                 <Link to={'/'}>
-                    <span className='py-1 text-3xl font-bold text-button'>NewTrip</span>
+                        <img
+                            className="h-10 w-36 object-cover"
+                            src="images/NewTrip.png"
+                            alt="New Trip"
+                        />
+                    
                 </Link>
                 <div className='options flex gap-4 align-middle items-center'>
                     <CustomLink to="/">Home</CustomLink>

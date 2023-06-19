@@ -11,7 +11,7 @@ import DatePicker from '../inputs/DatePicker';
 import { DateRange } from 'react-date-range';
 import { useNavigate } from "react-router-dom";
 import moment from 'moment';
-import { getUser, createUser } from '../../api/users';
+import { getUser, createUser, updateUserReq } from '../../api/users';
 
 
 
@@ -191,7 +191,7 @@ const NewTripModal = ({ user, friends }) => {
             location: location.label,
             days: calculateDays(),
             schedule: emptyScheduleArray(),
-            members: members,
+            members: [],
             dates: [startDateString(), endDateString()],
         };
 
@@ -200,13 +200,16 @@ const NewTripModal = ({ user, friends }) => {
         axios.post('http://localhost:3030/posts', postData)
             .then((response) => {
                 if (response.status === 201) {
-                    console.log('Trip created successfully:', response.data);
+                    console.log('Trip created successfully:', response.data._id);
                     // Handle any further actions after successful creation of the trip
+                    updateUserReq(members, response.data._id);
                 } else {
                     console.log('Failed to create trip:', response.status);
                     // Handle the error case if the trip creation fails
                 }
             })
+
+        // updateUserReq(members, newPost._id);
 
         onNext();
         // .then(() => {

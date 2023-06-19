@@ -1,3 +1,4 @@
+import Post from "../models/Post.js";
 import User from "../models/User.js";
 
 
@@ -65,8 +66,9 @@ export const getUserRequests = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id);
-    // const requests = user.requests;
-    res.status(200).json([]);
+    const requests = user.request;
+    const posts = await Post.find({_id: { $in: requests}});
+    res.status(200).json(posts);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
@@ -77,7 +79,6 @@ export const addFriend = async (req, res) => {
   try {
     console.log("in add friend srbve");
     const { id, friendId } = req.params;
-    console.log({id, friendId});
     const users = await User.find({userName: id});
     const user = users[0];
     user.friends.push(friendId);
@@ -87,5 +88,41 @@ export const addFriend = async (req, res) => {
     res.status(200).json(user);
   } catch (err) {
     res.status(404).json({ message: err.message });
+  }
+}
+
+export const sendReq = async (req, res) => {
+  try {
+    console.log("in sen req serve");
+    const {members, id} = req.body;
+    console.log(members);
+    console.log(id.toString());
+    const users = await User.find({_id: {$in: members}});
+    users.map(async (user) => {
+      user.request.push(id.toString());
+      await user.save();
+    })
+    console.log(`send request to ${users.length} users`);
+    
+    res.status(200);
+  } catch (err) {
+    res.status(404);
+  }
+}
+
+export const removeReq = async (req, res) => {
+  try{
+    console.log("remove request");
+    const id = req.params;
+    const {postId} = req.body;
+    const updatedUser = await User.findOneAndUpdate(
+      {_id: id.id},
+      {$pull: {request: postId}},
+      {new: true}
+    )
+    console.log(updatedUser);
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(404);
   }
 }

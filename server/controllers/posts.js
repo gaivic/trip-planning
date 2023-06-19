@@ -67,7 +67,6 @@ export const getPostsExplore = async (req, res) => {
       }
       return newPost;
     })
-    console.log(addPostsState);
     res.status(200).json(addPostsState);
   } catch (err) {
     res.status(404).json({ message: err })
@@ -84,8 +83,18 @@ export const getPostsFriends = async (req, res) => {
     console.log(friendNames);
     const posts = await Post.find({$and: [{ creatorId: { $in: friendNames} }, { published: true}]});
 
-    console.log(posts);
-    res.status(200).json(posts);
+    const addPostsState = posts.map((post) => {
+      const isBookmarked = user[0].bookmarks.includes(post._id);
+      const isLiked = post.likes.includes(user[0].userName);
+      const newPost = {
+        ...post.toObject(),
+        bookmarked: isBookmarked,
+        liked: isLiked,
+      }
+      return newPost;
+    })
+
+    res.status(200).json(addPostsState);
   } catch (err) {
     res.status(404).json({ message: err })
   }
@@ -208,6 +217,22 @@ export const updateSchedule = async (req, res) => {
     )
 
     res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+}
+
+export const updateMembers = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {userId} = req.body;
+    console.log({id, userId});
+    const post = await Post.findById(id);
+    console.log(post);
+
+    post.members.push(userId);
+    post.save();
+    res.status(200).json(post);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }

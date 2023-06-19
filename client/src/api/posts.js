@@ -118,3 +118,16 @@ export async function markPost({item, user}) {
     console.error('Error updating bookmark', err);
   }
 }
+
+export async function setPostMembers(post, User) {
+  try {
+    const userId = User._id;
+    const id = post._id;
+    let url = `${postBaseUrl}/update/members/${id}`;
+    const res = await axios.patch(url, {userId});
+    return res.data;
+  } catch (err) {
+    console.error('Error updating members', err);
+  }
+}
+

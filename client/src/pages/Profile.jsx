@@ -34,46 +34,46 @@ export default function Profile ({ user, signOut }) {
     if (fetchedUser.length === 0) {
       console.log("not created yet");
       const createdUser = await createUser(user);
-      // const fetchedPast = await getPostsPast(createdUser[0].userName);
-      // setPastPosts(fetchedPast);
-      // const fetchedBookmark = await getPostsPublished(createdUser[0].userName);
-      // setBookmarkPosts(fetchedBookmark);
-      // const fetchedPublished = await getPostsBookmarks(createdUser[0].userName);
-      // setPublishedPosts(fetchedPublished);
-      const [fetchedPast, fetchedBookmark, fetchedPublished] = await Promise.all([
-        getPostsPast(createdUser[0].userName),
-        getPostsPublished(createdUser[0].userName),
-        getPostsBookmarks(createdUser[0].userName),
-      ]);
-  
+      const fetchedPast = await getPostsPast(createdUser[0].userName);
       setPastPosts(fetchedPast);
+      const fetchedBookmark = await getPostsPublished(createdUser[0].userName);
       setBookmarkPosts(fetchedBookmark);
+      const fetchedPublished = await getPostsBookmarks(createdUser[0].userName);
       setPublishedPosts(fetchedPublished);
+      // const [fetchedPast, fetchedBookmark, fetchedPublished] = await Promise.all([
+      //   getPostsPast(createdUser[0].userName),
+      //   getPostsPublished(createdUser[0].userName),
+      //   getPostsBookmarks(createdUser[0].userName),
+      // ]);
+  
+      // setPastPosts(fetchedPast);
+      // setBookmarkPosts(fetchedBookmark);
+      // setPublishedPosts(fetchedPublished);
 
       console.log(`finsih loading posts`);
       setDefault();
     }
     else{
       console.log(fetchedUser[0]);
-      // const fetchedPast = await getPostsPast(fetchedUser[0].userName);
-      // setPastPosts(fetchedPast);
-      // console.log(`pastpost: ${fetchedPast}`);
-      // const fetchedBookmark = await getPostsBookmarks(fetchedUser[0].userName);
-      // setBookmarkPosts(fetchedBookmark);
-      // console.log(`bookmark: ${fetchedBookmark}`);
-      // const fetchedPublished = await getPostsPublished(fetchedUser[0].userName);
-      // setPublishedPosts(fetchedPublished);
-      const [fetchedPast, fetchedBookmark, fetchedPublished] = await Promise.all([
-        getPostsPast(fetchedUser[0].userName),
-        getPostsPublished(fetchedUser[0].userName),
-        getPostsBookmarks(fetchedUser[0].userName),
-      ]);
-  
+      const fetchedPast = await getPostsPast(fetchedUser[0].userName);
       setPastPosts(fetchedPast);
+      console.log(`pastpost: ${fetchedPast}`);
+      const fetchedBookmark = await getPostsBookmarks(fetchedUser[0].userName);
       setBookmarkPosts(fetchedBookmark);
+      console.log(`bookmark: ${fetchedBookmark}`);
+      const fetchedPublished = await getPostsPublished(fetchedUser[0].userName);
       setPublishedPosts(fetchedPublished);
-      console.log(`finsih loading all posts`);
-      setDefault();
+      // const [fetchedPast, fetchedBookmark, fetchedPublished] = await Promise.all([
+      //   getPostsPast(fetchedUser[0].userName),
+      //   getPostsPublished(fetchedUser[0].userName),
+      //   getPostsBookmarks(fetchedUser[0].userName),
+      // ]);
+  
+      // setPastPosts(fetchedPast);
+      // setBookmarkPosts(fetchedBookmark);
+      // setPublishedPosts(fetchedPublished);
+      // console.log(`finsih loading all posts`);
+      // setDefault();
     }
   }
 

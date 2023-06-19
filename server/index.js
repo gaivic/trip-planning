@@ -39,3 +39,8 @@ mongoose
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
   })
   .catch((error) => console.log(`${error} did not connect`));
+
+// Serve the index.html file for all routes
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "..", "client", "build", "index.html"));
+});

@@ -13,8 +13,8 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 const TripPlan = ({ active, onDayClick, post, schedule, deletePlace, dragUpdateSchedule }) => {
     const navigate = useNavigate();
 
-    const goToExplorePage = () => {
-        navigate('/explore'); // Replace '/home' with the actual URL of your home page
+    const goToLastPage = () => {
+        navigate(-1); // Go back to the last page URL
     };
 
     const handleDayClick = (day) => {
@@ -49,7 +49,7 @@ const TripPlan = ({ active, onDayClick, post, schedule, deletePlace, dragUpdateS
                     <button class="inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm font-medium rounded-md opacity-90"
                         onClick={() => {
                             updateSchedule({ post, schedule });
-                            goToExplorePage();
+                            goToLastPage();
                         }}>
                         <IoMdArrowRoundBack className='h-4 w-5 m-0' />
                         Explore

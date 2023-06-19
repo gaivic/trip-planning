@@ -83,3 +83,31 @@ export async function addFriend({user, other}) {
     return user;
   }
 }
+
+export async function updateUserReq(members, id) {
+  try {
+    let url = `${userBaseUrl}/request`
+    const res = await axios.patch(url, {members, id});
+    if(res.status === 200) 
+      console.log("requests sent");
+    else
+      console.log("failed to send requests");
+  } catch (err){
+    console.error('Error adding friend', err);
+  }
+}
+
+export async function removeReq(post, User) {
+  try {
+    const id = User._id;
+    const postId = post._id;
+    let url = `${userBaseUrl}/request/${id}`
+    const res = await axios.patch(url, {postId});
+    if(res.status === 200) 
+      console.log("requests sent");
+    else
+      console.log("failed to send requests");
+  } catch (err){
+    console.error('Error adding friend', err);
+  }
+}

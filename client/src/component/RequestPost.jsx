@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { IoIosPin } from 'react-icons/io';
+import { setPostMembers } from '../api/posts';
+import { removeReq } from '../api/users';
 
-export function RequestPost({post}) {
+export function RequestPost({post, User}) {
   const [isVisible, setIsVisible] = useState(true);
 
   const dates = post.dates.map((item) => {
@@ -11,7 +13,14 @@ export function RequestPost({post}) {
 
   const handleDecline = () => {
     setIsVisible(false);
+    removeReq(post, User);
   } 
+
+  const handleAccept = () => {
+    setIsVisible(false);
+    setPostMembers(post, User);
+    removeReq(post, User);
+  }
 
   if(!isVisible) {
     return null;
@@ -36,7 +45,7 @@ export function RequestPost({post}) {
       </div>
       <div className="flex-auto flex mt-2 justify-around">
         <button onClick={handleDecline} className="bg-blue-gray-100 ml-1 px-4 text-gray-700 rounded-lg">Decline</button>
-        <button className="bg-teal-200 mr-1 px-4 text-white rounded-lg">Accept</button>
+        <button onClick={handleAccept} className="bg-teal-200 mr-1 px-4 text-white rounded-lg">Accept</button>
       </div>
     </div>
   )

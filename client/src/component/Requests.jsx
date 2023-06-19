@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react'
 import './Requests.css'
 import { RequestPost } from './RequestPost';
 
-export default function Requests({ userRequest }) {
+export default function Requests({ userRequest, User }) {
   const [empty, setEmpty] = useState(true);
-  useEffect(() => {console.log(userRequest)
+  useEffect(() => {
+    console.log("request");
+    console.log(userRequest)
   }, []);
   // const [requests, setRequests] = useState([]);
 
@@ -63,8 +65,8 @@ export default function Requests({ userRequest }) {
     }
   ]
 
-  const requestList = requests.map((request) => {
-    return <RequestPost post={request}/>;
+  const requestList = userRequest.map((request) => {
+    return <RequestPost post={request} User={User}/>;
   })
 
   return(

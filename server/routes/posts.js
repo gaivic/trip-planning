@@ -1,6 +1,7 @@
 import express from "express";
 import { getPostsExplore, getPostsHome, getPostsPast, getPostsBookmarks, getPostsPublished, getPostsFriends, 
-  createPost, publishPost, updateSchedule, likePost, bookmarkPost, updatePublished } from "../controllers/posts.js";
+  createPost, publishPost, updateSchedule, likePost, bookmarkPost, updatePublished, updateMembers } from "../controllers/posts.js";
+
 
 const router = express.Router();
 
@@ -18,6 +19,7 @@ router.patch("/:id/bookmark", bookmarkPost);
 router.patch("/:id/publish", publishPost);
 router.patch("/update/schedule/:id", updateSchedule);
 router.patch("/update/published/:id", updatePublished);
+router.patch("/update/members/:id", updateMembers)
 
 /* POST */
 router.post("/", createPost);

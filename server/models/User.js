@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema(
     },
     request: {
       type: [String],
-      defualt: [],
+      default: [],
     }
   },
   { timestamps: true }

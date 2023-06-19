@@ -100,15 +100,15 @@ export default function Profile ({ user, signOut }) {
   return (
     <div className="profile ">
       <div className="border-b-2">
+        <div className="flex justify-end mr-3"><button className="bg-cyan-200 rounded-full m-3 py-1 px-4" onClick={signOut}>Sign Out</button></div>
         <div className="person w-full h-48  flex items-center justify-center">
           <div className='overflow-hidden h-20 w-20 text-white border border-gray-500 rounded-full'>
-              <img src="images/default.png" alt="" />
+            <img src="images/default.png" alt="" />
           </div>
           <div className="ml-5">
             <p className="text-xl font-semibold">{user.username}</p>
           </div>
         </div>
-        <div className="flex justify-end"><button onClick={signOut}>Sign Out</button></div>
       </div>
       <div className="posts w-full flex justify-center mt-[-2px] mb-4">
         <button className="w-40 h-12 flex justify-center"

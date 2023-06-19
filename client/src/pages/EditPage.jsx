@@ -25,12 +25,14 @@ function EditPage() {
     const [sizes, setSizes] = useState(['43%', '57%']);
     const [active, setActive] = useState(1); // Initialize with a default value
     const [schedule, setSchedule] = useState(post.schedule);
-    console.log(post);
+    console.log(location.state);
+    console.log(schedule);
 
     useEffect(() => {
         console.log(schedule);
     }, [schedule])
 
+    // add 
     const addTripToSchedule = (index, placeId) => {
         setSchedule((schedule) => {
             const updatedSchedule = [...schedule];
@@ -38,6 +40,24 @@ function EditPage() {
             return updatedSchedule;
         });
     };
+
+    // delete
+    const deletePlace = (day, index) => {
+        setSchedule((prevSchedule) => {
+            const updatedSchedule = [...prevSchedule];
+            updatedSchedule[day - 1].splice(index, 1);
+            return updatedSchedule;
+        });
+    };
+
+    // drag and Update Schedule
+    function dragUpdateSchedule(index, updatedPlaceNames) {
+        setSchedule((schedule) => {
+            const updatedSchedule = [...schedule];
+            updatedSchedule[index - 1] = updatedPlaceNames.map((place) => place.id);
+            return updatedSchedule;
+        });
+    }
 
     const handleDayClick = (day) => {
         setActive(day);
@@ -57,7 +77,7 @@ function EditPage() {
                 )}
             >
                 <Pane minSize='35%' maxSize='54%'>
-                    <TripPlan active={active} onDayClick={handleDayClick} post={post} schedule={schedule}/>
+                    <TripPlan active={active} onDayClick={handleDayClick} post={post} schedule={schedule} deletePlace={deletePlace} dragUpdateSchedule={dragUpdateSchedule}/>
                 </Pane>
                 <Pane>
                     <Map active={active} schedule={schedule} addTripToSchedule={addTripToSchedule} country={post.location}/>

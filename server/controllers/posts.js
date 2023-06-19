@@ -6,7 +6,7 @@ import moment from 'moment';
 /* CREATE */
 export const createPost = async (req, res) => {
   try {
-    const { creatorId, postTitle, picturePath, location, days, schedule, Members, dates } = req.body;
+    const { creatorId, postTitle, picturePath, location, days, schedule, members, dates } = req.body;
 
     const newPost = new Post({
       creatorId,
@@ -15,7 +15,7 @@ export const createPost = async (req, res) => {
       location,
       days,
       schedule,
-      Members,
+      members,
       dates,
     });
     await newPost.save();

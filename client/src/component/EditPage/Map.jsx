@@ -28,25 +28,49 @@ const Map = ({ active, schedule, addTripToSchedule, country }) => {
 
 
     const [mapRef, setMapRef] = useState();
-    const [isOpen, setIsOpen] = useState(false);
-    const [infoWindowData, setInfoWindowData] = useState();
 
     const [map, setMap] = useState(null);
     const [directionsResponse, setDirectionsResponse] = useState(null);
-    const originRef = useRef();
-    const destiantionRef = useRef();
 
     const [markerPosition, setMarkerPosition] = useState(null);
 
     const [placeData, setPlaceData] = useState(null);
 
-    const handleMapClick = (event) => {
-        setMarkerPosition({
-            lat: event.latLng.lat(),
-            lng: event.latLng.lng(),
-        });
-        // console.log(markerPosition);
+
+    // for autocomplete	
+    const [selectedPlaceId, setSelectedPlaceId] = useState(null);
+    const autocompleteRef = useRef(null);
+
+
+    // After click the place, get lat,lng,placeid, use this data to focus on the place and open infocard	
+    const handlePlaceChanged = () => {
+        if (autocompleteRef.current) {
+            const place = autocompleteRef.current.getPlace();
+            if (place && place.place_id && place.geometry && place.geometry.location) {
+                const { place_id, geometry: { location } } = place;
+                console.log(place_id);
+                console.log(location.lat());
+                console.log(location.lng());
+                if (mapRef) {
+                    const { lat, lng } = location;
+                    mapRef.panTo({ lat: lat(), lng: lng() });
+                    fetchPlaceDetails(place_id)
+                        .then((data) => {
+                            setPlaceData({ ...data, placeId: place_id });
+                        })
+                        .catch((error) => {
+                            console.error('Error fetching place details:', error);
+                        });
+                    setMarkerPosition({
+                        lat: location.lat(),
+                        lng: location.lng(),
+                    });
+
+                }
+            }
+        }
     };
+
 
     const handleInfoBoxClose = () => {
         // Handle the close event
@@ -145,7 +169,7 @@ const Map = ({ active, schedule, addTripToSchedule, country }) => {
                     const location = results[0].geometry.location;
                     bounds.extend(location);
                     map.fitBounds(bounds);
-                    const maxZoom = 7; // Set your desired maximum zoom level
+                    const maxZoom = 6; // Set your desired maximum zoom level
                     const zoom = map.getZoom();
                     if (zoom > maxZoom) {
                         map.setZoom(maxZoom);
@@ -167,7 +191,10 @@ const Map = ({ active, schedule, addTripToSchedule, country }) => {
         const directionsService = new window.google.maps.DirectionsService();
 
         const activeSchedule = schedule[active - 1];
-
+        if (activeSchedule.length === 0) {
+            setDirectionsResponse(null); // Clear the directions response
+            return;
+        }
         const origin = activeSchedule[0];
         const destination = activeSchedule[activeSchedule.length - 1];
         const waypoints = activeSchedule.slice(1, -1).map((place) => ({
@@ -232,40 +259,6 @@ const Map = ({ active, schedule, addTripToSchedule, country }) => {
     return (
         <div >
             <div className="relative">
-                {/* <div className="grid grid-cols-3 gap-4">
-                        <div className="z-10 my-2">
-                            <Autocomplete>
-
-                                <input
-                                    label="Search"
-                                    icon={<i className="fas fa-search" />}
-                                    className='bg-white'
-                                    ref={originRef}
-                                />
-                            </Autocomplete>
-
-                        </div>
-                        <div className="z-10  my-2">
-                            <Autocomplete>
-                                <input
-                                    label="Search"
-                                    icon={<i className="fas fa-search" />}
-                                    className='bg-white'
-                                    ref={destiantionRef}
-                                />
-                            </Autocomplete>
-                        </div>
-                        <div className="z-10  my-2">
-                            <Button
-                                type="submit"
-                                name="submit"
-                                onClick={calculateRoute}
-                            >
-                                Search
-                            </Button>
-
-                        </div>
-                    </div> */}
 
                 <GoogleMap
                     mapContainerStyle={mapContainerStyle}
@@ -280,6 +273,14 @@ const Map = ({ active, schedule, addTripToSchedule, country }) => {
                     }}
                     className="z-0"
                 >
+                    <Autocomplete onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)} onPlaceChanged={() => handlePlaceChanged()}>
+                        <div className="relative">
+                            <input
+                                className="bg-blue-gray-50 border-2 border-gray-400 border-spacing-1 w-3/5 h-12 px-4 py-2 rounded-full shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 absolute left-1/2 -translate-x-1/2 top-8 placeholder-black placeholder-opacity-50"
+                                placeholder="Search and add loaction"
+                            />
+                        </div>
+                    </Autocomplete>
                     {markerPosition && (
                         <MarkerF
                             position={markerPosition}

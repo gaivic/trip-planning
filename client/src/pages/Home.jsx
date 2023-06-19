@@ -39,6 +39,7 @@ export default function Home({ user }) {
       setPosts(fetchedPosts);
       const fetched = await getFriendList(createdUser[0]);
       setFriends(fetched);
+      setUser(createdUser[0]);
     }
     else{
       console.log(fetchedUser[0]);
@@ -46,6 +47,7 @@ export default function Home({ user }) {
       setPosts(fetchedPosts);
       const fetched = await getFriendList(fetchedUser[0]);
       setFriends(fetched);
+      setUser(fetchedUser[0]);
     }
   }
 
@@ -71,7 +73,7 @@ export default function Home({ user }) {
   
   return (
     <>
-      <NewTripModal user={user} friends={friends} isOpen />
+      <NewTripModal user={User} friends={friends} isOpen />
       <div className="body flex w-full">
         <div className="left overflow-y-auto">
           <div className="container w-3/5 min-h-full pt-8 pb-0 m-auto">

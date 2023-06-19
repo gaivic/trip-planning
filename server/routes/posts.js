@@ -1,17 +1,20 @@
 import express from "express";
-import { getPostsExplore, getPostsHome, getPostsPast, getPostsBookmarks, getPostsPublished, createPost, publishPost, updateSchedule } from "../controllers/posts.js";
+import { getPostsExplore, getPostsHome, getPostsPast, getPostsBookmarks, getPostsPublished, getPostsFriends, 
+  createPost, publishPost, updateSchedule, likePost, bookmarkPost } from "../controllers/posts.js";
 
 const router = express.Router();
 
 /* READ */
 router.get("/home/:id", getPostsHome);
-router.get("/explore", getPostsExplore);
+router.get("/explore/:id", getPostsExplore);
+router.get("/friends/:id", getPostsFriends);
 router.get("/past/:id", getPostsPast);
 router.get("/bookmarks/:id", getPostsBookmarks);
 router.get("/published/:id", getPostsPublished);
 
 /* UPDATE */
-// router.patch("/:id/like", likePost);
+router.patch("/:id/like", likePost);
+router.patch("/:id/bookmark", bookmarkPost);
 router.patch("/:id/publish", publishPost);
 router.patch("/update/schedule/:id", updateSchedule);
 

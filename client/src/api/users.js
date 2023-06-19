@@ -58,6 +58,19 @@ export async function getOtherList(user) {
   }
 }
 
+export async function getRequest(user) {
+  try {
+    let url = `${userBaseUrl}/request/${user._id}`
+    console.log(url);
+    const res = await axios.get(url);
+    const posts = await res.data;
+    return posts;
+  } catch (err) {
+    console.error('Error fetching data', err);
+    return ([]);
+  }
+}
+
 //PATCH
 export async function addFriend({user, other}) {
   try {

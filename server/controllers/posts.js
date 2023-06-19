@@ -38,10 +38,12 @@ export const getPostsHome = async (req, res) => {
   console.log("in getpostshome");
   try {
     const { id } = req.params;
-    console.log(id);
+    const user = await User.find({userName: id});
     const today = new Date();
     const formatted = moment(today).format("YYYY/MM/DD");
-    const posts = await Post.find({ creatorId: id, "dates.1": { $gte: formatted } }).sort({ 'dates.0': 1 });
+    const posts = await Post.find({$or: [ { members: user[0]._id, "dates.1": { $gte: formatted } }, 
+                        { creatorId: id, "dates.1": { $gte: formatted } } ]})
+                        .sort({ 'dates.0': 1 });
 
     res.status(200).json(posts);
   } catch (err) {
@@ -51,7 +53,38 @@ export const getPostsHome = async (req, res) => {
 
 export const getPostsExplore = async (req, res) => {
   try {
+    const { id } = req.params;
+    const user = await User.find( {userName: id} );
     const posts = await Post.find({ published: true });
+
+    const addPostsState = posts.map((post) => {
+      const isBookmarked = user[0].bookmarks.includes(post._id);
+      const isLiked = post.likes.includes(user[0].userName);
+      const newPost = {
+        ...post.toObject(),
+        bookmarked: isBookmarked,
+        liked: isLiked,
+      }
+      return newPost;
+    })
+    console.log(addPostsState);
+    res.status(200).json(addPostsState);
+  } catch (err) {
+    res.status(404).json({ message: err })
+  }
+}
+
+export const getPostsFriends = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.find( {userName: id} );
+    const friendIds = user[0].friends;
+    const friends = await User.find({ _id: { $in: friendIds}}, 'userName');
+    const friendNames = friends.map(friend => friend.userName);
+    console.log(friendNames);
+    const posts = await Post.find({$and: [{ creatorId: { $in: friendNames} }, { published: true}]});
+
+    console.log(posts);
     res.status(200).json(posts);
   } catch (err) {
     res.status(404).json({ message: err })
@@ -113,20 +146,20 @@ export const publishPost = async (req, res) => {
       id,
       { published: true },
     )
-
+    
     res.status(200).json(updatedPost);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
 }
 
+// an array of userName
 export const likePost = async (req, res) => {
   try {
     const { id } = req.params;
     const { userId } = req.body;
     const post = await Post.findById(id);
     const isLiked = post.likes.includes(userId);
-
     if (isLiked) {
       post.likes = post.likes.filter((like) => like !== userId);
     } else {
@@ -134,28 +167,30 @@ export const likePost = async (req, res) => {
     }
 
     const updatedPost = await post.save();
-
+    console.log("liked");
     res.status(200).json(updatedPost);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
 }
 
+// an array of post._id
 export const bookmarkPost = async (req, res) => {
   try {
     const { id } = req.params;
     const { userId } = req.body;
-    const user = await User.findById(userId);
+    console.log(userId);
+    const users = await User.find({userName: userId});
+    const user = users[0];
     const isMarked = user.bookmarks.includes(id);
-
     if (isMarked) {
-      user.bookmarks = user.bookmarks.filter((mark) => mark !== userId);
+      user.bookmarks = user.bookmarks.filter((mark) => mark !== id);
     } else {
       user.bookmarks.push(id);
     }
 
     const updatedUser = await user.save();
-
+    console.log(updatedUser);
     res.status(200).json(updatedUser);
   } catch (err) {
     res.status(404).json({ message: err.message });

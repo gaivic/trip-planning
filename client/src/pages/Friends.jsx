@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import "./Friends.css"
 import {FriendPosts} from '../component/FriendPost';
 import {FriendList, OtherList} from '../component/FriendList';
-import { getPostsHome} from '../api/posts';
+import { getPostsFriends} from '../api/posts';
 import { getFriendList, getOtherList } from '../api/users';
 import { BsBookmark, BsBookmarkFill, BsHeart, BsHeartFill } from "react-icons/bs";
 import { IoArrowBack } from "react-icons/io5";
@@ -15,7 +15,18 @@ export default function Friends({ user }) {
     const [others, setOthers] = useState([]);
     const [tolist, setTolist] = useState("friends");
 
-    
+    const getPosts = async () => {
+        const fetchedUser = await getUser(user);
+            if (fetchedUser.length === 0) {
+                const createdUser = await createUser(user);
+                const fetched = await getPostsFriends(createdUser[0]);
+                setPosts(fetched);
+            }
+            else{
+                const fetched = await getPostsFriends(fetchedUser[0]);
+                setPosts(fetched);
+            }
+    }
  
     const getOtherUsers = async () => {
         const fetchedUser = await getUser(user);
@@ -46,25 +57,17 @@ export default function Friends({ user }) {
     }
 
     useEffect(() => {
-        const getPosts = async () => {
-          const fetched = await getPostsHome();
-          setPosts(fetched);
-        }
-    
-        // getPosts();
-    }, []);
-
-    useEffect(() => {
         console.log(tolist);
     }, [tolist]);
 
     useEffect(() => {
+        getPosts();
         getFriends();
         getOtherUsers();
     }, []);
 
     const renderedPosts = posts.map((post) => {
-        return <FriendPosts key={post.id} post={post} />
+        return <FriendPosts user={user} post={post} />
     });
 
     const renderedFriends = friends.map((friend) => {
